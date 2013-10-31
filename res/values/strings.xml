@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">IsraelWeather</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_section_temperatures_map">Temperatures Map</string>
+    <string name="title_section_rain_radar">Rain Radar</string>
+    <string name="title_section_tide_table">Tide Table</string>
+    
+    <string name="ims_temperatures_map_url" formatted="false">http://www.ims.gov.il/Ims/Map/MapRender.aspx?type=weather&amp;LangId=2&amp;Optional=c&amp;Tab=Temperature</string>
+    <string name="ims_rain_radar_url" formatted="false">http://www.ims.gov.il/Ims/Pages/RadarImage.aspx?Row=%d&amp;TotalImages=%d&amp;LangID=0&amp;Location=</string>
+    <string name="isramar_tide_table_url">http://isramar.ocean.org.il/isramar2009/TideHadera/webForm2.aspx</string>
+    
+</resources>
