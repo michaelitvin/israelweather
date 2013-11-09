@@ -1,9 +1,12 @@
 package com.litvin.israelweather;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.ByteBuffer;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -53,22 +56,26 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> implement
         while (!success && retries > 0 && !cancelled) {
 	        try {
 	        	URL url = new URL(urldisplay);
-	        	URLConnection conn = url.openConnection();
-	        	conn.setReadTimeout(3000);
-	        	InputStream in = conn.getInputStream();
-	            bm = BitmapFactory.decodeStream(in);
+	        	ByteBuffer buf = getAsByteArray(url, 3000);
+	        	byte[] bufArr = buf.array();
+	            bm = BitmapFactory.decodeByteArray(bufArr, 0, bufArr.length);
 	            success = true;
 	        } catch (SocketTimeoutException e) {
 	        	retries--;
+	        	String logMsg = "Couldn't download " + urldisplay + "retries=" + retries + ";"
+						+ ((e.getMessage()==null)?("Unkown error: " + e.toString()):e.getMessage());
+	        	//Log.w("litvin", logMsg);
 	        } catch (Exception e) {
-	        	String err = "Error downloading " + urldisplay
+	        	String logMsg = "Error downloading " + urldisplay
 	        						+ ((e.getMessage()==null)?("Unkown error: " + e.toString()):e.getMessage());
-	            Log.e("Error", err);
+	            Log.e("litvin", logMsg);
 	            e.printStackTrace();
 	            break;
 	        }
         }
         finished = true;
+    	String logMsg = "Done with " + urldisplay + "retries=" + retries + ";success=" + success;
+    	//Log.i("litvin", logMsg);
         
     	synchronized (MAX_CONCURRENT) {
 			concurrent--;
@@ -78,7 +85,41 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> implement
         return bm;
     }
     
+    private static ByteBuffer getAsByteArray(URL url, int timeout) throws IOException {
+        URLConnection connection = url.openConnection();
+        // Set the timeout
+        connection.setReadTimeout(timeout);
+        // Since you get a URLConnection, use it to get the InputStream
+        InputStream in = connection.getInputStream();
+        // Now that the InputStream is open, get the content length
+        int contentLength = connection.getContentLength();
 
+        // To avoid having to resize the array over and over and over as
+        // bytes are written to the array, provide an accurate estimate of
+        // the ultimate size of the byte array
+        ByteArrayOutputStream tmpOut;
+        if (contentLength != -1) {
+            tmpOut = new ByteArrayOutputStream(contentLength);
+        } else {
+            tmpOut = new ByteArrayOutputStream(131072); // Pick some appropriate size
+        }
+
+        byte[] buf = new byte[16384];
+        while (true) {
+            int len = in.read(buf);
+            if (len == -1) {
+                break;
+            }
+            tmpOut.write(buf, 0, len);
+        }
+        in.close();
+        tmpOut.close(); // No effect, but good to do anyway to keep the metaphor alive
+
+        byte[] array = tmpOut.toByteArray();
+
+        return ByteBuffer.wrap(array);
+    }
+    
     public Bitmap getBitmap(Bitmap def) {
     	if (bm != null) {
     		return bm;
