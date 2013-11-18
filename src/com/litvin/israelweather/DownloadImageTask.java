@@ -59,7 +59,13 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> implement
 	        	ByteBuffer buf = getAsByteArray(url, 3000);
 	        	byte[] bufArr = buf.array();
 	            bm = BitmapFactory.decodeByteArray(bufArr, 0, bufArr.length);
-	            success = true;
+	            if (bm != null)
+	            	success = true;
+	            else {
+	            	retries--;
+		        	String logMsg = "Couldn't decode image from " + urldisplay;
+		        	Log.w("litvin", logMsg);
+	            }
 	        } catch (SocketTimeoutException e) {
 	        	retries--;
 	        	String logMsg = "Couldn't download " + urldisplay + "retries=" + retries + ";"
