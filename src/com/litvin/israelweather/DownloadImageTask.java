@@ -52,18 +52,17 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> implement
 
         String urldisplay = urls[0];
         success = false;
-        int retries = 10;
+        int retries = 40;
         while (!success && retries > 0 && !cancelled) {
 	        try {
-	        	URL url = new URL(urldisplay);
-	        	ByteBuffer buf = getAsByteArray(url, 3000);
+	        	ByteBuffer buf = getAsByteArray(urldisplay, 3000);
 	        	byte[] bufArr = buf.array();
 	            bm = BitmapFactory.decodeByteArray(bufArr, 0, bufArr.length);
 	            if (bm != null)
 	            	success = true;
 	            else {
 	            	retries--;
-		        	String logMsg = "Couldn't decode image from " + urldisplay;
+		        	String logMsg = "Couldn't decode image from " + urldisplay + "; retries=" + retries;
 		        	Log.w("litvin", logMsg);
 	            }
 	        } catch (SocketTimeoutException e) {
@@ -91,15 +90,21 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> implement
         return bm;
     }
     
-    private static ByteBuffer getAsByteArray(URL url, int timeout) throws IOException {
+    static CookieManager cookieManager = new CookieManager();
+    
+    private static ByteBuffer getAsByteArray(String urldisplay, int timeout) throws IOException {
+    	URL url = new URL(urldisplay);
         URLConnection connection = url.openConnection();
+        cookieManager.setCookies(connection);
         // Set the timeout
         connection.setReadTimeout(timeout);
+        connection.connect();
+        cookieManager.storeCookies(connection);
         // Since you get a URLConnection, use it to get the InputStream
         InputStream in = connection.getInputStream();
         // Now that the InputStream is open, get the content length
         int contentLength = connection.getContentLength();
-
+        
         // To avoid having to resize the array over and over and over as
         // bytes are written to the array, provide an accurate estimate of
         // the ultimate size of the byte array
@@ -118,10 +123,12 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> implement
             }
             tmpOut.write(buf, 0, len);
         }
+        byte[] array = tmpOut.toByteArray();
+        
         in.close();
         tmpOut.close(); // No effect, but good to do anyway to keep the metaphor alive
 
-        byte[] array = tmpOut.toByteArray();
+        
 
         return ByteBuffer.wrap(array);
     }

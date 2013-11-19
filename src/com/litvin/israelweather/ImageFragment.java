@@ -1,6 +1,7 @@
 package com.litvin.israelweather;
 
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -33,6 +34,7 @@ public class ImageFragment extends Fragment implements OnTouchListener, OnSeekBa
 	private Bitmap errorBitmap;
 	
 	private int nComplete;
+	private int lastDownloadedId = 0;
 
 	private DownloadImageTask[] dl;
 	private String[] urls;
@@ -59,6 +61,7 @@ public class ImageFragment extends Fragment implements OnTouchListener, OnSeekBa
 		seekBar.setOnSeekBarChangeListener(this);
 		seekBar.setMax(urls.length-1);
 		seekBar.setProgress(urls.length-1);
+		seekBar.setBackgroundColor(0x2222cc33);
 		seekBar.setVisibility(View.GONE);
 		progressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
 		progressBar.setMax(urls.length);
@@ -95,6 +98,7 @@ public class ImageFragment extends Fragment implements OnTouchListener, OnSeekBa
 		if (dl == null || dl.length != urls.length)
 			dl = new DownloadImageTask[urls.length];
 		nComplete = 0;
+		lastDownloadedId = -1;
 		if (state != null)
 			nComplete = state.getInt(TAG_NCOMPLETE, 0);
 		for (int i = 0; i < urls.length; i++) {
@@ -168,10 +172,12 @@ public class ImageFragment extends Fragment implements OnTouchListener, OnSeekBa
 		Integer intid = (Integer)id;
 		//imgView.setImageBitmap(dl[intid].getBitmap(errorBitmap));
 		//*
-		if (success)
+		if (success && intid > lastDownloadedId) {
 			imgView.setImageBitmap(result);
-		else
-			imgView.setImageBitmap(errorBitmap);
+			lastDownloadedId = intid;
+		}
+		//else
+		//	imgView.setImageBitmap(errorBitmap);
 		//*/
 		if (dl.length == nComplete) {
 			if (dl.length > 1)
