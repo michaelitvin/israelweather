@@ -29,6 +29,7 @@ public class ImageFragment extends Fragment implements OnTouchListener, OnSeekBa
 	private ZoomableImageView imgView;
 	private SeekBar seekBar;
 	private ProgressBar progressBar;
+	private ProgressBar progressCircle;
 	private TextView textView;
 	
 	private Bitmap errorBitmap;
@@ -67,6 +68,9 @@ public class ImageFragment extends Fragment implements OnTouchListener, OnSeekBa
 		progressBar.setMax(urls.length);
 		progressBar.setProgress(0);
 		progressBar.setVisibility(View.VISIBLE);
+
+		progressCircle = (ProgressBar) rootView.findViewById(R.id.progressCircle);
+		progressCircle.setVisibility(View.VISIBLE);
 
 		return rootView;
 	}
@@ -183,6 +187,7 @@ public class ImageFragment extends Fragment implements OnTouchListener, OnSeekBa
 			if (dl.length > 1)
 				seekBar.setVisibility(View.VISIBLE);
 			progressBar.setVisibility(View.GONE);
+			progressCircle.setVisibility(View.GONE);
 		}
 	}
 	
