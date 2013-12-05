@@ -1,12 +1,16 @@
 package com.litvin.israelweather;
 
+import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.ByteBuffer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -52,7 +56,7 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> implement
 
         String urldisplay = urls[0];
         success = false;
-        int retries = 40;
+        int retries = 50;
         while (!success && retries > 0 && !cancelled) {
 	        try {
 	        	ByteBuffer buf = getAsByteArray(urldisplay, 3000);
@@ -70,12 +74,18 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> implement
 	        	String logMsg = "Couldn't download " + urldisplay + "retries=" + retries + ";"
 						+ ((e.getMessage()==null)?("Unkown error: " + e.toString()):e.getMessage());
 	        	//Log.w("litvin", logMsg);
+	        } catch (SocketException e) {
+	        	retries--;
+	        	String logMsg = "Couldn't download " + urldisplay + "retries=" + retries + ";"
+						+ ((e.getMessage()==null)?("Unkown error: " + e.toString()):e.getMessage());
+	        	Log.w("litvin", logMsg);
 	        } catch (Exception e) {
+	        	retries--;
 	        	String logMsg = "Error downloading " + urldisplay
 	        						+ ((e.getMessage()==null)?("Unkown error: " + e.toString()):e.getMessage());
 	            Log.e("litvin", logMsg);
 	            e.printStackTrace();
-	            break;
+	            //break;
 	        }
         }
         finished = true;
@@ -101,7 +111,7 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> implement
         connection.connect();
         cookieManager.storeCookies(connection);
         // Since you get a URLConnection, use it to get the InputStream
-        InputStream in = connection.getInputStream();
+        InputStream in = new BufferedInputStream(connection.getInputStream(),16384);
         // Now that the InputStream is open, get the content length
         int contentLength = connection.getContentLength();
         
@@ -128,7 +138,18 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> implement
         in.close();
         tmpOut.close(); // No effect, but good to do anyway to keep the metaphor alive
 
-        
+        if (array.length < 8192) { //Check if it's a cookie request
+        	String content = new String(array);
+        	Pattern pattern = Pattern.compile("document\\s*\\.\\s*cookie\\s*=\\s*'([^']+)'");
+        	Matcher matcher = pattern.matcher(content);
+        	while (matcher.find()) {
+        		String cookie;
+        		if (matcher.groupCount() == 1) {
+        			cookie = matcher.group(1);
+        			cookieManager.storeCookie(connection, cookie);
+        		}
+        	}
+        }
 
         return ByteBuffer.wrap(array);
     }

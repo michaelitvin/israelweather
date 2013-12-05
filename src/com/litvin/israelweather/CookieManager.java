@@ -5,6 +5,8 @@ import java.io.*;
 import java.util.*;
 import java.text.*;
 
+import android.util.Log;
+
 /**
  * CookieManager is a simple utilty for handling cookies when working with
  * java.net.URL and java.net.URLConnection objects.
@@ -48,6 +50,15 @@ public class CookieManager {
 		dateFormat = new SimpleDateFormat(DATE_FORMAT);
 	}
 
+	public void storeCookie(URLConnection conn, String cookie) {
+		Map domainStore = getDomainStore(conn);
+		
+		// OK, now we are ready to get the cookies out of the URLConnection
+		addCookieToStore(domainStore, cookie);
+		
+		Log.i("litvin", "Added cookie [" + cookie + "]");
+	}
+	
 	/**
 	 * Retrieves and stores cookies returned by the host on the other side of
 	 * the the open java.net.URLConnection.
@@ -62,11 +73,23 @@ public class CookieManager {
 	 *             Thrown if conn is not open.
 	 */
 	public void storeCookies(URLConnection conn) throws IOException {
+		Map domainStore = getDomainStore(conn);
+		
+		// OK, now we are ready to get the cookies out of the URLConnection
 
+		String headerName = null;
+		for (int i = 1; (headerName = conn.getHeaderFieldKey(i)) != null; i++) {
+			if (headerName.equalsIgnoreCase(SET_COOKIE)) {
+				addCookieToStore(domainStore, conn.getHeaderField(i));
+			}
+		}
+	}
+
+	private Map getDomainStore(URLConnection conn) {
 		// let's determine the domain from where these cookies are being sent
 		String domain = getDomainFromHost(conn.getURL().getHost());
 
-		Map domainStore; // this is where we will store cookies for this domain
+		Map domainStore = null; // this is where we will store cookies for this domain
 
 		// now let's check the store to see if we have an entry for this domain
 		if (store.containsKey(domain)) {
@@ -77,42 +100,41 @@ public class CookieManager {
 			domainStore = new HashMap();
 			store.put(domain, domainStore);
 		}
+		
+		return domainStore;
+	}
+	
+	private void addCookieToStore(Map domainStore, String field) {
+		Map cookie = new HashMap();
+		StringTokenizer st = new StringTokenizer(
+				field, COOKIE_VALUE_DELIMITER);
 
-		// OK, now we are ready to get the cookies out of the URLConnection
+		// the specification dictates that the first name/value pair
+		// in the string is the cookie name and value, so let's handle
+		// them as a special case:
 
-		String headerName = null;
-		for (int i = 1; (headerName = conn.getHeaderFieldKey(i)) != null; i++) {
-			if (headerName.equalsIgnoreCase(SET_COOKIE)) {
-				Map cookie = new HashMap();
-				StringTokenizer st = new StringTokenizer(
-						conn.getHeaderField(i), COOKIE_VALUE_DELIMITER);
-
-				// the specification dictates that the first name/value pair
-				// in the string is the cookie name and value, so let's handle
-				// them as a special case:
-
-				boolean isFirst = true;
-				while (st.hasMoreTokens()) {
-					String token = st.nextToken();
-					String name, value;
-					int sep = token.indexOf(NAME_VALUE_SEPARATOR);
-					if (sep < 0) {
-						name = token;
-						value = "";
-					} else {
-						name = token.substring(0, sep);
-						value = token.substring(sep + 1, token.length());
-					}
-					cookie.put(name, value);
-					if (isFirst) {
-						domainStore.put(name, cookie);
-						isFirst = false;
-					}
-				}
+		boolean isFirst = true;
+		while (st.hasMoreTokens()) {
+			String token = st.nextToken();
+			String name, value;
+			int sep = token.indexOf(NAME_VALUE_SEPARATOR);
+			if (sep < 0) {
+				name = token;
+				value = "";
+			} else {
+				name = token.substring(0, sep);
+				value = token.substring(sep + 1, token.length());
+			}
+			cookie.put(name, value);
+			if (isFirst) {
+				domainStore.put(name, cookie);
+				isFirst = false;
 			}
 		}
-	}
 
+	}
+	
+	
 	/**
 	 * Prior to opening a URLConnection, calling this method will set all
 	 * unexpired cookies that match the path or subpaths for thi underlying URL
