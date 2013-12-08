@@ -34,6 +34,7 @@ public class ZoomableImageView extends View {
     PointF start = new PointF();       
    
     float currentScale;
+    float initialScale = 1.0f;
     float curX;
     float curY;
     private boolean haveMovedDragging = false;
@@ -65,8 +66,8 @@ public class ZoomableImageView extends View {
    
     private Handler mHandler = new Handler();       
    
-    float minScale;
-    float maxScale = 2.0f;
+    float minScale = 0.5f;
+    float maxScale = 4.0f;
    
     float wpRadius = 25.0f;
     float wpInnerRadius = 20.0f;
@@ -77,6 +78,7 @@ public class ZoomableImageView extends View {
    
     public static final int DEFAULT_SCALE_FIT_INSIDE = 0;
     public static final int DEFAULT_SCALE_ORIGINAL = 1;
+    public static final int DEFAULT_SCALE_FIT_INTEGER = 2;
    
     private int defaultScale;
    
@@ -93,6 +95,7 @@ public class ZoomableImageView extends View {
         setFocusable(true);
         setFocusableInTouchMode(true);
        
+        maxScale = context.getResources().getInteger(R.integer.maxScale);
         screenDensity = context.getResources().getDisplayMetrics().density;
                        
         initPaints();
@@ -106,7 +109,7 @@ public class ZoomableImageView extends View {
         initPaints();
         gestureDetector = new GestureDetector(new MyGestureDetector());
        
-        defaultScale = ZoomableImageView.DEFAULT_SCALE_ORIGINAL;
+        defaultScale = ZoomableImageView.DEFAULT_SCALE_FIT_INTEGER;
     }
    
     private void initPaints() {
@@ -151,7 +154,31 @@ public class ZoomableImageView extends View {
                 curY = initY;
                
                 currentScale = scale;
-                minScale = scale;
+                //minScale = scale;
+            }
+            else if(defaultScale == ZoomableImageView.DEFAULT_SCALE_FIT_INTEGER) {               
+                if(imgWidth > containerWidth) {           
+                    scale = Math.max(minScale, Math.round((float)containerWidth / imgWidth));           
+                    float newHeight = imgHeight * scale;           
+                    initY = (containerHeight - (int)newHeight)/2;
+                   
+                    matrix.setScale(scale, scale);
+                    matrix.postTranslate(0, initY);
+                }
+                else {           
+                    scale = Math.max(minScale, Math.round((float)containerHeight / imgHeight));
+                    float newWidth = imgWidth * scale;
+                    initX = (containerWidth - (int)newWidth)/2;
+                   
+                    matrix.setScale(scale, scale);
+                    matrix.postTranslate(initX, 0);
+                }
+               
+                curX = initX;
+                curY = initY;
+               
+                currentScale = scale;
+                //minScale = scale;
             }
             else {
                 if(imgWidth > containerWidth) {                                   
@@ -167,10 +194,10 @@ public class ZoomableImageView extends View {
                 curY = initY;
                
                 currentScale = 1.0f;
-                minScale = 1.0f;               
+                //minScale = 1.0f;               
             }
-           
-                                   
+            initialScale = currentScale;
+            checkImageConstraints();
             invalidate();           
         }
     }
@@ -391,7 +418,7 @@ public class ZoomableImageView extends View {
 			            int initY = 0;
 			           
 			            matrix.reset();
-			           
+			            
 			            if(defaultScale == ZoomableImageView.DEFAULT_SCALE_FIT_INSIDE) {               
 			                if(imgWidth > containerWidth) {           
 			                    scale = (float)containerWidth / imgWidth;           
@@ -414,7 +441,31 @@ public class ZoomableImageView extends View {
 			                curY = initY;
 			               
 			                currentScale = scale;
-			                minScale = scale;
+			                //minScale = scale;
+			            }
+			            else if(defaultScale == ZoomableImageView.DEFAULT_SCALE_FIT_INTEGER) {               
+			                if(imgWidth > containerWidth) {           
+			                    scale = Math.max(minScale, Math.round((float)containerWidth / imgWidth));
+			                    float newHeight = imgHeight * scale;           
+			                    initY = (containerHeight - (int)newHeight)/2;
+			                   
+			                    matrix.setScale(scale, scale);
+			                    matrix.postTranslate(0, initY);
+			                }
+			                else {           
+			                    scale = Math.max(minScale, Math.round((float)containerHeight / imgHeight));
+			                    float newWidth = imgWidth * scale;
+			                    initX = (containerWidth - (int)newWidth)/2;
+			                   
+			                    matrix.setScale(scale, scale);
+			                    matrix.postTranslate(initX, 0);
+			                }
+			               
+			                curX = initX;
+			                curY = initY;
+			               
+			                currentScale = scale;
+			                //minScale = scale;
 			            }
 			            else {
 			                if(imgWidth > containerWidth) {
@@ -441,13 +492,15 @@ public class ZoomableImageView extends View {
 			                curY = initY;
 			               
 			                currentScale = 1.0f;
-			                minScale = 1.0f;               
+			                //minScale = 1.0f;               
 			            }
 		            }
+		            initialScale = currentScale;
+		            checkImageConstraints();
 		            invalidate();
 				}
 			});
-
+	    	checkImageConstraints();
             invalidate();           
         }
         else {
@@ -594,11 +647,11 @@ public class ZoomableImageView extends View {
             targetScaleX = event.getX();
             targetScaleY = event.getY();
            
-            if(Math.abs(currentScale - maxScale) > 0.1) {           
+            if(Math.abs(currentScale - maxScale) > 0.1 && Math.abs(currentScale - minScale) > 0.1) {           
                 targetScale = maxScale;
             }
             else {
-                targetScale = minScale;
+                targetScale = initialScale;
             }
             targetRatio = targetScale / currentScale;
             mHandler.removeCallbacks(mUpdateImageScale);

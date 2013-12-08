@@ -37,7 +37,9 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:max="1"
-        android:progress="0" />
+        android:progress="0"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp" />
 
     <ProgressBar
         android:id="@+id/progressBar"
