@@ -1,19 +1,11 @@
 package com.litvin.israelweather;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-
-import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 
@@ -51,7 +43,7 @@ public abstract class ImsForecastFragment extends Fragment implements DownloadTa
 		return rootView;
 	}
 	
-	abstract void downloadContent(String urlToday, String urlNextDays, int cityIdx, String cityName);
+	abstract void downloadContent();
 	
 	void generateSuccessHtml() {
 		html = "<html><head></head><body><div>"+dlToday.getHtml()+"</div><br/><div align='center'>"+dlNextDays.getHtml()+"</div></body></html>";

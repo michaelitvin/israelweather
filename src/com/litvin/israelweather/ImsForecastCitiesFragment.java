@@ -6,16 +6,12 @@ import java.net.URLEncoder;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
-import android.widget.ProgressBar;
-import android.widget.Spinner;
 
 public class ImsForecastCitiesFragment extends ImsForecastFragment implements OnItemSelectedListener  {
 	/**
@@ -27,6 +23,7 @@ public class ImsForecastCitiesFragment extends ImsForecastFragment implements On
 			
 	private String[] cityNames;
 	private int[] cityCodes;
+	private int cityIdx;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -45,25 +42,25 @@ public class ImsForecastCitiesFragment extends ImsForecastFragment implements On
 		spinCities.setAdapter(adapter);
 		spinCities.setOnItemSelectedListener(this);
 		SharedPreferences settings = getActivity().getSharedPreferences(GENERAL_PREFS, 0);
-	    int defCity = settings.getInt(PREF_CITY_IDX, getActivity().getResources().getInteger(R.integer.default_city_index));
-		spinCities.setSelection(defCity);
-		downloadContent(urlToday, urlNextDays, cityCodes[defCity], cityNames[defCity]);
+	    cityIdx = settings.getInt(PREF_CITY_IDX, getActivity().getResources().getInteger(R.integer.default_city_index));
+		spinCities.setSelection(cityIdx);
+		downloadContent();
 		spinCities.setVisibility(View.VISIBLE);
 
-		downloadContent(urlToday, urlNextDays, cityCodes[defCity], cityNames[defCity]);
+		downloadContent();
 
 		return rootView;
 	}
 	
-	void downloadContent(String urlToday, String urlNextDays, int cityIdx, String cityName) {
+	void downloadContent() {
 		//TODO load selection from state or user store
-	    String imsForecastTodayFmt = String.format(urlToday, cityIdx, cityName );
+	    String imsForecastTodayFmt = String.format(urlToday, cityCodes[cityIdx], cityNames[cityIdx] );
 		try {
-			imsForecastTodayFmt = String.format(urlToday, cityIdx, URLEncoder.encode(cityName,"UTF-8") );
+			imsForecastTodayFmt = String.format(urlToday, cityCodes[cityIdx], URLEncoder.encode(cityNames[cityIdx],"UTF-8") );
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
-	    String imsForecastNextDaysFmt = String.format(urlNextDays, cityIdx);
+	    String imsForecastNextDaysFmt = String.format(urlNextDays, cityCodes[cityIdx]);
 
 		dlToday = new DownloadHTMLTask(this, ARG_URL_FORECAST_TODAY);
 		dlToday.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, imsForecastTodayFmt);
@@ -91,7 +88,8 @@ public class ImsForecastCitiesFragment extends ImsForecastFragment implements On
 		html = "";
 		display();
 		progressCircle.setVisibility(View.VISIBLE);
-		downloadContent(urlToday, urlNextDays, cityCodes[pos], cityNames[pos]);
+		cityIdx = pos;
+		downloadContent();
 		
 		// We need an Editor object to make preference changes.
 		// All objects are from android.context.Context

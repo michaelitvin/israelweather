@@ -21,10 +21,10 @@ public class MainActivity extends FragmentActivity implements
 	 * current dropdown position.
 	 */
 	private static final String STATE_SELECTED_NAVIGATION_ITEM = "selected_navigation_item";
-	private static final String[] FRAGMENT_TAGS = {"imsForecastCitiesFragment", "rainRadarFragmant", "tempMapFragment", "tideTableFragment"};
+	private static final String[] FRAGMENT_TAGS = {"imsForecastCountryFragment", "imsForecastCitiesFragment", "rainRadarFragmant", "tempMapFragment", "tideTableFragment"};
 	
 	private static final int RAIN_RADAR_FRAMES = 12;
-	private Fragment imsForecastCitiesFragment, rainRadarFragmant, tempMapFragment, tideTableFragment;
+	private Fragment imsForecastCountryFragment, imsForecastCitiesFragment, rainRadarFragmant, tempMapFragment, tideTableFragment;
 	private Fragment fragmentArray[];
 	
 	private Bitmap errorBitmap;
@@ -46,6 +46,7 @@ public class MainActivity extends FragmentActivity implements
 				new ArrayAdapter<String>(getActionBarThemedContextCompat(),
 						android.R.layout.simple_list_item_1,
 						android.R.id.text1, new String[] {
+								getString(R.string.title_section_ims_forecast_country),
 								getString(R.string.title_section_ims_forecast_cities),
 								getString(R.string.title_section_rain_radar),
 								getString(R.string.title_section_temperatures_map),
@@ -73,24 +74,28 @@ public class MainActivity extends FragmentActivity implements
 		rainRadarFragmant.setArguments(rainRadarFragmantArgs);
 		tideTableFragment.setArguments(tideTableFragmentArgs);
 		*/
+
+		imsForecastCountryFragment = (ImsForecastCountryFragment)getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAGS[0]);
+		if (imsForecastCountryFragment == null)
+			imsForecastCountryFragment = ImsForecastCountryFragment.newInstance(getString(R.string.ims_forecast_home_url), getString(R.string.ims_forecast_home_url), savedInstanceState);
 		
-		imsForecastCitiesFragment = (ImsForecastCitiesFragment)getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAGS[0]);
+		imsForecastCitiesFragment = (ImsForecastCitiesFragment)getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAGS[1]);
 		if (imsForecastCitiesFragment == null)
 			imsForecastCitiesFragment = ImsForecastCitiesFragment.newInstance(getString(R.string.ims_forecast_today_url), getString(R.string.ims_forecast_next_days_url), savedInstanceState);
 
-		rainRadarFragmant = (ImageFragment)getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAGS[1]);
+		rainRadarFragmant = (ImageFragment)getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAGS[2]);
 		if (rainRadarFragmant == null)
 			rainRadarFragmant = ImageFragment.newInstance(rainRadarUrls, savedInstanceState, errorBitmap);
 
-		tempMapFragment = (ImageFragment)getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAGS[2]);
+		tempMapFragment = (ImageFragment)getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAGS[3]);
 		if (tempMapFragment == null)
 			tempMapFragment = ImageFragment.newInstance(new String[] {getString(R.string.ims_temperatures_map_url)}, savedInstanceState, errorBitmap);
 		
-		tideTableFragment = (ImageFragment)getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAGS[3]);
+		tideTableFragment = (ImageFragment)getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAGS[4]);
 		if (tideTableFragment == null)
 			tideTableFragment = ImageFragment.newInstance(new String[] {getString(R.string.isramar_tide_table_url)}, savedInstanceState, errorBitmap);
 		
-		fragmentArray = new Fragment[] {imsForecastCitiesFragment, rainRadarFragmant, tempMapFragment, tideTableFragment};
+		fragmentArray = new Fragment[] {imsForecastCountryFragment, imsForecastCitiesFragment, rainRadarFragmant, tempMapFragment, tideTableFragment};
 	}
 
 	/**
