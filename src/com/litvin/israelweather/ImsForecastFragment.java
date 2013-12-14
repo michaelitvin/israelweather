@@ -38,6 +38,7 @@ public abstract class ImsForecastFragment extends Fragment implements DownloadTa
 		progressCircle.setVisibility(View.VISIBLE);
 		
 		webView = (WebView) rootView.findViewById(R.id.webView);
+		
 		spinCities = (Spinner) rootView.findViewById(R.id.spinCities);
 
 		return rootView;
@@ -46,7 +47,8 @@ public abstract class ImsForecastFragment extends Fragment implements DownloadTa
 	abstract void downloadContent();
 	
 	void generateSuccessHtml() {
-		html = "<html><head></head><body><div>"+dlToday.getHtml()+"</div><br/><div align='center'>"+dlNextDays.getHtml()+"</div></body></html>";
+		String forecastHtmlFmt = getActivity().getResources().getString(R.string.forecast_html);
+		html = String.format(forecastHtmlFmt, dlToday.getHtml(), dlNextDays.getHtml());
 		display();
 	}
 	

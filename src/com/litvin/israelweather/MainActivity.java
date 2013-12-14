@@ -77,7 +77,7 @@ public class MainActivity extends FragmentActivity implements
 
 		imsForecastCountryFragment = (ImsForecastCountryFragment)getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAGS[0]);
 		if (imsForecastCountryFragment == null)
-			imsForecastCountryFragment = ImsForecastCountryFragment.newInstance(getString(R.string.ims_forecast_home_url), getString(R.string.ims_forecast_home_url), savedInstanceState);
+			imsForecastCountryFragment = ImsForecastCountryFragment.newInstance(getString(R.string.ims_forecast_home_url), savedInstanceState);
 		
 		imsForecastCitiesFragment = (ImsForecastCitiesFragment)getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAGS[1]);
 		if (imsForecastCitiesFragment == null)

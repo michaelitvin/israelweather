@@ -20,5 +20,12 @@ public class DownloadHTMLTask extends DownloadTask<String> {
 	public String getHtml() {
 		return html;
 	}
+	
+	public void setHtml(String html, boolean success) {
+		this.html = html;
+		this.success = success;
+		finished = true;
+		onPostExecute(html);
+	}
 
 }
