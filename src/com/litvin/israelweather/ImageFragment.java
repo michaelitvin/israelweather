@@ -17,7 +17,7 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
-public class ImageFragment extends Fragment implements OnTouchListener, OnSeekBarChangeListener, DownloadImageTask.Callback {
+public class ImageFragment extends Fragment implements OnTouchListener, OnSeekBarChangeListener, DownloadImageTask.Callback<Bitmap> {
 	/**
 	 * The fragment argument representing the section number for this
 	 * fragment.
@@ -90,10 +90,12 @@ public class ImageFragment extends Fragment implements OnTouchListener, OnSeekBa
 			return;
 		outState.putInt(TAG_NCOMPLETE, nComplete);
 		for (int i = 0; i < dl.length; i++) {
-			if (dl[i] != null && dl[i].isFinished()) {
-				outState.putParcelable(getBitmapTag(i), dl[i]);
-			} else {
-				dl[i].cancel();
+			if (dl[i] != null) {
+				if (dl[i].isFinished()) {
+					outState.putParcelable(getBitmapTag(i), dl[i]);
+				} else {
+					dl[i].cancel();
+				}
 			}
 		}
 	}
@@ -136,7 +138,7 @@ public class ImageFragment extends Fragment implements OnTouchListener, OnSeekBa
 		args.putParcelable(ImageFragment.ARG_ERROR_BITMAP, errorBitmap);
 		ret.setArguments(args);
 
-		ret.downloadImages(urls, state);
+		//ret.downloadImages(urls, state);
 		
 		return ret;
 	}

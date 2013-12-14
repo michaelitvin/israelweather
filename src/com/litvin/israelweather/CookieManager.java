@@ -45,12 +45,11 @@ public class CookieManager {
 	private DateFormat dateFormat;
 
 	public CookieManager() {
-
 		store = new HashMap();
 		dateFormat = new SimpleDateFormat(DATE_FORMAT);
 	}
 
-	public void storeCookie(URLConnection conn, String cookie) {
+	public synchronized void storeCookie(URLConnection conn, String cookie) {
 		Map domainStore = getDomainStore(conn);
 		
 		// OK, now we are ready to get the cookies out of the URLConnection
@@ -72,7 +71,7 @@ public class CookieManager {
 	 * @throws java.io.IOException
 	 *             Thrown if conn is not open.
 	 */
-	public void storeCookies(URLConnection conn) throws IOException {
+	public synchronized void storeCookies(URLConnection conn) throws IOException {
 		Map domainStore = getDomainStore(conn);
 		
 		// OK, now we are ready to get the cookies out of the URLConnection
@@ -148,7 +147,7 @@ public class CookieManager {
 	 * @throws java.io.IOException
 	 *             Thrown if conn has already been opened.
 	 */
-	public void setCookies(URLConnection conn) throws IOException {
+	public synchronized void setCookies(URLConnection conn) throws IOException {
 
 		// let's determine the domain and path to retrieve the appropriate
 		// cookies
@@ -224,7 +223,7 @@ public class CookieManager {
 	 * Returns a string representation of stored cookies organized by domain.
 	 */
 
-	public String toString() {
+	public synchronized String toString() {
 		return store.toString();
 	}
 	/*

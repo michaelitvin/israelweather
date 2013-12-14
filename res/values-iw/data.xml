@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="default_city_index">14</integer>
+    
+    <integer-array name="city_codes">
+		<item>520</item>
+		<item>114</item>
+		<item>513</item>
+		<item>203</item>
+		<item>115</item>
+		<item>202</item>
+		<item>510</item>
+		<item>204</item>
+		<item>106</item>
+		<item>207</item>
+		<item>105</item>
+		<item>209</item>
+		<item>507</item>
+		<item>201</item>
+		<item>402</item>
+	</integer-array>
+</resources>
