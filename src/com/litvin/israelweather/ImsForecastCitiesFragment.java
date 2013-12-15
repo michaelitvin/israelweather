@@ -18,7 +18,6 @@ public class ImsForecastCitiesFragment extends ImsForecastFragment implements On
 	 * The fragment argument representing the section number for this
 	 * fragment.
 	 */
-	public static final String GENERAL_PREFS = "General preferences";
 	public static final String PREF_CITY_IDX = "City index";
 			
 	private String[] cityNames;
@@ -41,7 +40,7 @@ public class ImsForecastCitiesFragment extends ImsForecastFragment implements On
 		// Apply the adapter to the spinner
 		spinCities.setAdapter(adapter);
 		spinCities.setOnItemSelectedListener(this);
-		SharedPreferences settings = getActivity().getSharedPreferences(GENERAL_PREFS, 0);
+		SharedPreferences settings = getActivity().getSharedPreferences(MainActivity.GENERAL_PREFS, 0);
 	    cityIdx = settings.getInt(PREF_CITY_IDX, getActivity().getResources().getInteger(R.integer.default_city_index));
 		spinCities.setSelection(cityIdx);
 		downloadContent();
@@ -93,7 +92,7 @@ public class ImsForecastCitiesFragment extends ImsForecastFragment implements On
 		
 		// We need an Editor object to make preference changes.
 		// All objects are from android.context.Context
-		SharedPreferences settings = getActivity().getSharedPreferences(GENERAL_PREFS, 0);
+		SharedPreferences settings = getActivity().getSharedPreferences(MainActivity.GENERAL_PREFS, 0);
 		SharedPreferences.Editor editor = settings.edit();
 		editor.putInt(PREF_CITY_IDX, pos);
 		// Commit the edits!

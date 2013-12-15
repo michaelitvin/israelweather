@@ -1,17 +1,29 @@
 package com.litvin.israelweather;
 
+import java.util.Locale;
+
 import android.annotation.TargetApi;
 import android.app.ActionBar;
+import android.app.backup.RestoreObserver;
 import android.os.Bundle;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
 public class MainActivity extends FragmentActivity implements
 		ActionBar.OnNavigationListener {
@@ -20,6 +32,10 @@ public class MainActivity extends FragmentActivity implements
 	 * The serialization (saved instance state) Bundle key representing the
 	 * current dropdown position.
 	 */
+	public static final String GENERAL_PREFS = "General preferences";
+	public static final String PREF_LANG = "Language index";
+	private static final Locale[] LOCALES = {new Locale("en"), new Locale("he"), new Locale("ru")};
+
 	private static final String STATE_SELECTED_NAVIGATION_ITEM = "selected_navigation_item";
 	private static final String[] FRAGMENT_TAGS = {"imsForecastCountryFragment", "imsForecastCitiesFragment", "rainRadarFragmant", "tempMapFragment", "tideTableFragment"};
 	
@@ -32,6 +48,11 @@ public class MainActivity extends FragmentActivity implements
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		
+		SharedPreferences settings = getSharedPreferences(GENERAL_PREFS, 0);
+		int lang = settings.getInt(PREF_LANG, getDefaultLanguage());
+		setLocale(lang);
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
@@ -146,6 +167,48 @@ public class MainActivity extends FragmentActivity implements
 				.commit();
 		return true;
 	}
+	
 
+	
+	public void setLocale(int lang) { 
+		Resources res = getResources(); 
+		DisplayMetrics dm = res.getDisplayMetrics(); 
+		Configuration conf = res.getConfiguration(); 
+		conf.locale = LOCALES[lang]; 
+		res.updateConfiguration(conf, dm); 
+	}
+	
+	public boolean selectLanguage(MenuItem item) {
+		// We need an Editor object to make preference changes.
+		// All objects are from android.context.Context
+		SharedPreferences settings = getSharedPreferences(GENERAL_PREFS, 0);
+		int oldLang = settings.getInt(PREF_LANG, getDefaultLanguage());
+		int newLang = (oldLang+1)%LOCALES.length;
+		SharedPreferences.Editor editor = settings.edit();
+		editor.putInt(PREF_LANG, newLang);
+		// Commit the edits!
+		editor.commit();
 
+		setLocale(newLang);
+		Intent refresh = new Intent(this, MainActivity.class); 
+		finish();
+		startActivity(refresh);
+		return true;
+	}
+
+	private int getDefaultLanguage() {
+		Locale defLocale = Locale.getDefault();
+		String defLangStr = defLocale.getLanguage();
+		int defLang = 0;
+		for (int i = 0; i < LOCALES.length; i++) {
+			if (LOCALES[i].getLanguage().equals(defLangStr)) {
+				defLang = i;
+				break;
+			}
+		}
+		return defLang;
+	}
+	
+	
+	
 }

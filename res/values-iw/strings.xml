@@ -3,6 +3,7 @@
 
     <string name="app_name">מזג אוויר בארץ</string>
     <string name="action_settings">הגדרות</string>
+    <string name="action_language">עבר</string>
     <string name="title_section_ims_forecast_country">תחזית כל הארץ</string>
     <string name="title_section_ims_forecast_cities">תחזית ערים</string>
     <string name="title_section_rain_radar">מכ"ם גשם</string>
