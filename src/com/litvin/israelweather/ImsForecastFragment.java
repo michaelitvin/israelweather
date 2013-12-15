@@ -23,6 +23,8 @@ public abstract class ImsForecastFragment extends Fragment implements DownloadTa
 	public static final String ARG_URL_FORECAST_TODAY = "urlForecastToday";
 	public static final String ARG_URL_FORECAST_FEW_DAYS = "urlForecastNextDays";
 	
+	public static final String TAG_HTML = "html";
+	
 	protected ProgressBar progressCircle;
 	protected WebView webView;
 	protected Spinner spinCities;
@@ -53,24 +55,26 @@ public abstract class ImsForecastFragment extends Fragment implements DownloadTa
 		Display display = getActivity().getWindowManager().getDefaultDisplay();
 		DisplayMetrics metrics = new DisplayMetrics();
 	    display.getMetrics(metrics);
-	    double initialScale = 100.0*metrics.widthPixels/480.0;
+	    //double initialScale = 100.0*metrics.widthPixels/480.0;
+	    double initialScale = 200;
 	    webView.setWebViewClient(new WebViewClient() {
 			@Override
 			public void onPageFinished(WebView view, String url) {
+				super.onPageFinished(view, url);
 				webView.setPadding(0, 0, 0, 0);
 				webView.scrollTo(0, 0);
-				webView.getSettings().setLayoutAlgorithm(l)
-				super.onPageFinished(view, url);
+				Log.i("litvin", "contentHeight="+webView.getContentHeight());
+				//webView.reload();
 			}
 	    });
 	    webView.setInitialScale((int)initialScale);
-		*/
+		//*/
 		spinCities = (Spinner) rootView.findViewById(R.id.spinCities);
 
 		return rootView;
 	}
 	
-	abstract void downloadContent();
+	abstract void downloadContent(Bundle savedInstanceState);
 	
 	void generateSuccessHtml() {
 		try {
@@ -93,20 +97,16 @@ public abstract class ImsForecastFragment extends Fragment implements DownloadTa
 	}
 	
 	void display() {
+		//webView.loadUrl("about:blank");
 		webView.loadDataWithBaseURL("http://www.ims.gov.il/", html, "text/html", null, null);
 	}
 
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		//downloadContent(urlToday, urlNextDays);
-		super.onActivityCreated(savedInstanceState);
-	}
 
 
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
-		//TODO save state
 		super.onSaveInstanceState(outState);
+		outState.putString(TAG_HTML, html);
 	}
 
 	

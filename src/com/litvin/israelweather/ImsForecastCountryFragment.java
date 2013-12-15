@@ -28,7 +28,7 @@ public class ImsForecastCountryFragment extends ImsForecastFragment {
 		View rootView = super.onCreateView(inflater, container, savedInstanceState);
 		spinCities.setVisibility(View.GONE);
 		
-		downloadContent();
+		downloadContent(savedInstanceState);
 
 		return rootView;
 	}
@@ -67,12 +67,18 @@ public class ImsForecastCountryFragment extends ImsForecastFragment {
 		return html;
 	}
 	
-	void downloadContent() {
-		//TODO load selection from state or user store
-		dlToday = new DownloadHTMLTask(this, ARG_URL_FORECAST_TODAY);
-		dlToday.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, urlToday);
-		dlNextDays = new DownloadHTMLTask(this, ARG_URL_FORECAST_FEW_DAYS);
-		dlNextDays.setHtml("", true);
+	void downloadContent(Bundle savedInstanceState) {
+		if (savedInstanceState != null)
+			html = savedInstanceState.getString(TAG_HTML);
+		if (html == null) {
+			dlToday = new DownloadHTMLTask(this, ARG_URL_FORECAST_TODAY);
+			dlToday.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, urlToday);
+			dlNextDays = new DownloadHTMLTask(this, ARG_URL_FORECAST_FEW_DAYS);
+			dlNextDays.setHtml("", true);
+		} else {
+			display();
+			progressCircle.setVisibility(View.GONE);
+		}
 	}
 	
 	

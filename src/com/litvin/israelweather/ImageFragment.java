@@ -61,7 +61,6 @@ public class ImageFragment extends Fragment implements OnTouchListener, OnSeekBa
 		seekBar = (SeekBar) rootView.findViewById(R.id.seekBar);
 		seekBar.setOnSeekBarChangeListener(this);
 		seekBar.setMax(urls.length-1);
-		seekBar.setProgress(urls.length-1);
 		seekBar.setBackgroundColor(0x4422cc33);
 		seekBar.setVisibility(View.GONE);
 		progressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
@@ -190,6 +189,7 @@ public class ImageFragment extends Fragment implements OnTouchListener, OnSeekBa
 				seekBar.setVisibility(View.VISIBLE);
 			progressBar.setVisibility(View.GONE);
 			progressCircle.setVisibility(View.GONE);
+			seekBar.setProgress(urls.length-1);
 		}
 	}
 	

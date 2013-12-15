@@ -39,33 +39,51 @@ public class ImsForecastCitiesFragment extends ImsForecastFragment implements On
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		// Apply the adapter to the spinner
 		spinCities.setAdapter(adapter);
-		spinCities.setOnItemSelectedListener(this);
 		SharedPreferences settings = getActivity().getSharedPreferences(MainActivity.GENERAL_PREFS, 0);
 	    cityIdx = settings.getInt(PREF_CITY_IDX, getActivity().getResources().getInteger(R.integer.default_city_index));
 		spinCities.setSelection(cityIdx);
-		downloadContent();
 		spinCities.setVisibility(View.VISIBLE);
 
-		downloadContent();
+		downloadContent(savedInstanceState); //This already happens onItemSelected
 
 		return rootView;
 	}
 	
-	void downloadContent() {
-		//TODO load selection from state or user store
-	    String imsForecastTodayFmt = String.format(urlToday, cityCodes[cityIdx], cityNames[cityIdx] );
-		try {
-			imsForecastTodayFmt = String.format(urlToday, cityCodes[cityIdx], URLEncoder.encode(cityNames[cityIdx],"UTF-8") );
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
+	@Override
+	public void onViewCreated(View view, Bundle savedInstanceState) {
+		isFirstSelection = true;
+		if (spinCities.getOnItemSelectedListener() == null) { //ugly workaround for double onSelected firing on creation...
+			spinCities.post(new Runnable() {
+			    public void run() {
+			    	spinCities.setOnItemSelectedListener(ImsForecastCitiesFragment.this);
+			    }
+			});
 		}
-	    String imsForecastNextDaysFmt = String.format(urlNextDays, cityCodes[cityIdx]);
-
-		dlToday = new DownloadHTMLTask(this, ARG_URL_FORECAST_TODAY);
-		dlToday.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, imsForecastTodayFmt);
-		dlNextDays = new DownloadHTMLTask(this, ARG_URL_FORECAST_FEW_DAYS);
-		dlNextDays.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, imsForecastNextDaysFmt);
-
+			
+		super.onViewCreated(view, savedInstanceState);
+	}
+	
+	
+	void downloadContent(Bundle savedInstanceState) {
+		if (savedInstanceState != null)
+			html = savedInstanceState.getString(TAG_HTML);
+		if (html == null) {
+		    String imsForecastTodayFmt = String.format(urlToday, cityCodes[cityIdx], cityNames[cityIdx] );
+			try {
+				imsForecastTodayFmt = String.format(urlToday, cityCodes[cityIdx], URLEncoder.encode(cityNames[cityIdx],"UTF-8") );
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
+		    String imsForecastNextDaysFmt = String.format(urlNextDays, cityCodes[cityIdx]);
+	
+			dlToday = new DownloadHTMLTask(this, ARG_URL_FORECAST_TODAY);
+			dlToday.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, imsForecastTodayFmt);
+			dlNextDays = new DownloadHTMLTask(this, ARG_URL_FORECAST_FEW_DAYS);
+			dlNextDays.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, imsForecastNextDaysFmt);
+		} else {
+			display();
+			progressCircle.setVisibility(View.GONE);
+		}
 	}
 	
 	
@@ -81,14 +99,19 @@ public class ImsForecastCitiesFragment extends ImsForecastFragment implements On
 		return ret;
 	}
 
-
+	private boolean isFirstSelection;
+	
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-		html = "";
+		if (isFirstSelection) {
+			isFirstSelection = false;
+			return;
+		}
+		html = null;
 		display();
 		progressCircle.setVisibility(View.VISIBLE);
 		cityIdx = pos;
-		downloadContent();
+		downloadContent(null);
 		
 		// We need an Editor object to make preference changes.
 		// All objects are from android.context.Context
