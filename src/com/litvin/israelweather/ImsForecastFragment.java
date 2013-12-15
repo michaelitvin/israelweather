@@ -1,11 +1,17 @@
 package com.litvin.israelweather;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 
@@ -38,7 +44,27 @@ public abstract class ImsForecastFragment extends Fragment implements DownloadTa
 		progressCircle.setVisibility(View.VISIBLE);
 		
 		webView = (WebView) rootView.findViewById(R.id.webView);
-		
+		//webView.setInitialScale(getActivity().getResources().getInteger(R.integer.initial_webview_scale));
+		//webView.setInitialScale(200);
+		//webView.getSettings().set
+		//webView.getSettings().setLoadWithOverviewMode(true);
+		//webView.getSettings().setUseWideViewPort(false);
+		/*
+		Display display = getActivity().getWindowManager().getDefaultDisplay();
+		DisplayMetrics metrics = new DisplayMetrics();
+	    display.getMetrics(metrics);
+	    double initialScale = 100.0*metrics.widthPixels/480.0;
+	    webView.setWebViewClient(new WebViewClient() {
+			@Override
+			public void onPageFinished(WebView view, String url) {
+				webView.setPadding(0, 0, 0, 0);
+				webView.scrollTo(0, 0);
+				webView.getSettings().setLayoutAlgorithm(l)
+				super.onPageFinished(view, url);
+			}
+	    });
+	    webView.setInitialScale((int)initialScale);
+		*/
 		spinCities = (Spinner) rootView.findViewById(R.id.spinCities);
 
 		return rootView;
@@ -47,14 +73,23 @@ public abstract class ImsForecastFragment extends Fragment implements DownloadTa
 	abstract void downloadContent();
 	
 	void generateSuccessHtml() {
-		String forecastHtmlFmt = getActivity().getResources().getString(R.string.forecast_html);
-		html = String.format(forecastHtmlFmt, dlToday.getHtml(), dlNextDays.getHtml());
-		display();
+		try {
+			String forecastHtmlFmt = getActivity().getResources().getString(R.string.forecast_html);
+			html = String.format(forecastHtmlFmt, dlToday.getHtml(), dlNextDays.getHtml());
+			//html = html.replaceAll("class=\"HPWarnings", "class=\"scalefont HPWarnings");
+			display();
+		} catch (NullPointerException ex) {
+			Log.w("litvin", ex.toString());
+		}
 	}
 	
 	void generateFailureHtml() {
-		html = getActivity().getResources().getString(R.string.ims_forecast_error);
-		display();
+		try {
+			html = getActivity().getResources().getString(R.string.ims_forecast_error);
+			display();
+		} catch (NullPointerException ex) {
+			Log.w("litvin", ex.toString());
+		}
 	}
 	
 	void display() {

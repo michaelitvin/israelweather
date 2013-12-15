@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,15 +37,22 @@ public class ImsForecastCountryFragment extends ImsForecastFragment {
 	
 	@Override
 	void generateSuccessHtml() {
-		String today, nextDays;
-		today = getTextBetween(dlToday.getHtml(), "<div id=\"_ctl0_PageBody_HPforecast1_divDailyForecastIsr\"", "</div>");
-		nextDays = getTextBetween(dlToday.getHtml(), "<div id=\"_ctl0_PageBody_HPforecast1_divNextDaysIsr\"", "</div>");
-		String forecastHtmlFmt = getActivity().getResources().getString(R.string.forecast_html);
-		html = String.format(forecastHtmlFmt, today, nextDays);
-		html = html.replaceAll("style=\"display: none;\"", "style=\"display: block;\"");
-		html = html.replaceAll("class=\"HPWarningsBoldText\"", "class=\"HPWarningsBoldText\" style=\"font-weight:bold;\"");
-		
-		display();
+		try {		
+			String today, nextDays;
+			today = getTextBetween(dlToday.getHtml(), "<div id=\"_ctl0_PageBody_HPforecast1_divDailyForecastIsr\"", "</div>");
+			nextDays = getTextBetween(dlToday.getHtml(), "<div id=\"_ctl0_PageBody_HPforecast1_divNextDaysIsr\"", "</div>");
+			String forecastHtmlFmt = getActivity().getResources().getString(R.string.forecast_html);
+			html = String.format(forecastHtmlFmt, today, nextDays);
+			html = html.replaceAll("style=\"display: none;\"", "style=\"display: block;\""); //Bold heading fix
+			html = html.replaceAll("style=\"width:27px;", "width=\"55px\" style=\"width:55px;"); //Date column fix
+			
+			html = html.replaceAll("class=\"HPWarningsBoldText\"", "class=\"HPWarningsBoldText\" style=\"font-weight:bold;\"");
+			
+			display();
+		} catch (NullPointerException ex) {
+			Log.w("litvin", ex.toString());
+		}
+
 	}
 
 

@@ -1,5 +1,5 @@
 <resources>
 
-    <integer name="maxScale">3</integer>
-
+    <integer name="max_image_scale">3</integer>
+	
 </resources>

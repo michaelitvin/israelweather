@@ -95,7 +95,7 @@ public class ZoomableImageView extends View {
         setFocusable(true);
         setFocusableInTouchMode(true);
        
-        maxScale = context.getResources().getInteger(R.integer.maxScale);
+        maxScale = context.getResources().getInteger(R.integer.max_image_scale);
         screenDensity = context.getResources().getDisplayMetrics().density;
                        
         initPaints();

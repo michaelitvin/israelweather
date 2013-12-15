@@ -6,6 +6,6 @@
     -->
     <dimen name="activity_horizontal_margin">128dp</dimen>
 
-    <integer name="maxScale">5</integer>
+    <integer name="max_image_scale">5</integer>
     
 </resources>

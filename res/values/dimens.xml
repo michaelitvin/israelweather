@@ -4,6 +4,6 @@
     <dimen name="activity_horizontal_margin">2dp</dimen>
     <dimen name="activity_vertical_margin">2dp</dimen>
     
-    <integer name="maxScale">2</integer>
+    <integer name="max_image_scale">2</integer>
 
 </resources>
