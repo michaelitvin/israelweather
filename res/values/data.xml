@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <integer name="default_city_index">12</integer>
+    <integer name="default_city_code">402</integer>
     
     <integer-array name="city_codes">
         <item>209</item>

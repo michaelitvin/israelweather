@@ -13,13 +13,13 @@
     <string name="ims_forecast_home_url" formatted="false">http://www.ims.gov.il/ims/all_tahazit/</string>
     <string name="ims_forecast_today_url" formatted="false">http://www.ims.gov.il/IMS/Pages/IsrCitiesTodayForeCast.aspx?LangId=1&amp;LocationId=%d&amp;LocationName=%s&amp;MaxTempDuringDay=%%D7%%98%%D7%%9E%%D7%%A4%%2E%%20%%D7%%94%%D7%%9E%%D7%%A7%%D7%%A1%%D7%%99%%D7%%9E%%D7%%95%%D7%%9D%%20%%D7%%91%%D7%%99%%D7%%95%%D7%%9D&amp;MinTempNight=%%D7%%98%%D7%%9E%%D7%%A4%%2E%%20%%D7%%94%%D7%%9E%%D7%%99%%D7%%A0%%D7%%99%%D7%%9E%%D7%%95%%D7%%9D%%20%%D7%%91%%D7%%9C%%D7%%99%%D7%%9C%%D7%%94&amp;RelHumidityNoon=%%D7%%9C%%D7%%97%%D7%%95%%D7%%AA%%20%%D7%%99%%D7%%97%%D7%%A1%%D7%%99%%D7%%AA%%20%%D7%%91%%D7%%A6%%D7%%94%%D7%%A8%%D7%%99%%D7%%99%%D7%%9D&amp;FreqWindSpeed=%%D7%%9E%%D7%%94%%D7%%99%%D7%%A8%%D7%%95%%D7%%AA%%20%%D7%%94%%D7%%A8%%D7%%95%%D7%%97%%20%%D7%%94%%D7%%A9%%D7%%9B%%D7%%99%%D7%%97%%D7%%94&amp;MaxWindSpeed=%%D7%%9E%%D7%%94%%D7%%99%%D7%%A8%%D7%%95%%D7%%AA%%20%%D7%%94%%D7%%A8%%D7%%95%%D7%%97%%20%%D7%%94%%D7%%9E%%D7%%99%%D7%%A8%%D7%%91%%D7%%99%%D7%%AA&amp;To=to&amp;WindDirection=%%D7%%9B%%D7%%99%%D7%%95%%D7%%95%%D7%%9F%%20%%D7%%94%%D7%%A8%%D7%%95%%D7%%97&amp;CF=C</string>
     <string name="ims_forecast_next_days_url" formatted="false">http://www.ims.gov.il/IMS/Pages/IsrCitiesForeCast.aspx?LangId=1&amp;LocationId=%d&amp;align=right&amp;DayAndDate=%%D7%%99%%D7%%95%%D7%%9D%%20%%D7%%95%%D7%%AA%%D7%%90%%D7%%A8%%D7%%99%%D7%%9A&amp;WeatherAndTemprature=%%D7%%9E%%D7%%96%%22%%D7%%90%%20%%D7%%95%%D7%%98%%D7%%9E%%D7%%A4%%D7%%A8%%D7%%98%%D7%%95%%D7%%A8%%D7%%94&amp;CF=C</string>
-    <string name="forecast_html" formatted="false"><![CDATA[<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"/></head><body><div align=\"center\" style=\"direction:rtl;\">%s</div><br/><div align=\"center\" style=\"direction:rtl;\">%s</div></body></html>]]></string>
+    <string name="forecast_html" formatted="false"><![CDATA[<html>%s<body><div align=\"center\" style=\"direction:rtl;\">%s</div><br/><div align=\"center\" style=\"direction:rtl;\">%s</div></body></html>]]></string>
     
     <string name="ims_temperatures_map_url" formatted="false">http://www.ims.gov.il/Ims/Map/MapRender.aspx?type=weather&amp;LangId=1&amp;Optional=c&amp;Tab=Temperature</string>
     <string name="ims_rain_radar_url" formatted="false">http://www.ims.gov.il/Ims/Pages/RadarImage.aspx?Row=%d&amp;TotalImages=%d&amp;LangID=1&amp;Location=</string>
     <string name="isramar_tide_table_url">http://isramar.ocean.org.il/isramar2009/TideHadera/webForm2.aspx</string>
     
-    <string name="ims_forecast_error"><![CDATA[<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"/></head><body style=\"direction:rtl;\">אופס... אני לא מצליחה לטעון את המידע מאתר השירות המטאורולוגי :(<br/><br/>(האם האינטרנט מחובר?)</body></html>]]></string>
+    <string name="ims_forecast_error"><![CDATA[<html>%s<body style=\"direction:rtl;\">אופס... אני לא מצליחה לטעון את המידע מאתר השירות המטאורולוגי :(<br/><br/>(האם האינטרנט מחובר?)</body></html>]]></string>
     
     <string-array name="city_names">
 		<item>אילת</item>

@@ -1,5 +1,10 @@
 <resources>
 
     <integer name="max_image_scale">3</integer>
+    
+    <dimen name="spinner_text_size">10pt</dimen>
+    <dimen name="spinner_padding">5dp</dimen>
 	
+    <string name="html_head"><![CDATA[<head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.5, user-scalable=yes\" /></head>]]></string>
+    
 </resources>

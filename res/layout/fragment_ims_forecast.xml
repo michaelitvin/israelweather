@@ -15,7 +15,8 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_above="@+id/spinCities" />
+        android:layout_above="@+id/spinCities"
+         />
     
 	<Spinner
         android:id="@+id/spinCities"
@@ -24,7 +25,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:visibility="gone"
+        android:visibility="visible"
         />
 
 	<ProgressBar

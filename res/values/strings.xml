@@ -13,13 +13,13 @@
     <string name="ims_forecast_home_url" formatted="false">http://www.ims.gov.il/IMSENG/All_Tahazit/homepage.htm</string>
     <string name="ims_forecast_today_url" formatted="false">http://www.ims.gov.il/IMS/Pages/IsrCitiesTodayForeCast.aspx?LangId=2&amp;LocationId=%d&amp;LocationName=%s&amp;MaxTempDuringDay=Max.%%20temp.%%20(day)&amp;MinTempNight=Min.%%20temp.%%20(night)&amp;RelHumidityNoon=Relative%%20humidity%%20(noon)&amp;FreqWindSpeed=Frequent%%20wind%%20speed&amp;MaxWindSpeed=Max.%%20wind%%20speed&amp;To=to&amp;WindDirection=Wind%%20direction&amp;CF=C</string>
     <string name="ims_forecast_next_days_url" formatted="false">http://www.ims.gov.il/IMS/Pages/IsrCitiesForeCast.aspx?LangId=2&amp;LocationId=%d&amp;align=left&amp;DayAndDate=Day&amp;WeatherAndTemprature=Temperature&amp;CF=C</string>
-    <string name="forecast_html" formatted="false"><![CDATA[<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"/></head><body\"><div align=\"center\" style=\"direction:ltr;\">%s</div><br/><div align=\"center\" style=\"direction:ltr;\">%s</div></body></html>]]></string>
+    <string name="forecast_html" formatted="false"><![CDATA[<html>%s<body\"><div align=\"center\" style=\"direction:ltr;\">%s</div><br/><div align=\"center\" style=\"direction:ltr;\">%s</div></body></html>]]></string>
     
     <string name="ims_temperatures_map_url">http://www.ims.gov.il/Ims/Map/MapRender.aspx?type=weather&amp;LangId=2&amp;Optional=c&amp;Tab=Temperature</string>
     <string name="ims_rain_radar_url" formatted="false">http://www.ims.gov.il/Ims/Pages/RadarImage.aspx?Row=%d&amp;TotalImages=%d&amp;LangID=0&amp;Location=</string>
     <string name="isramar_tide_table_url">http://isramar.ocean.org.il/isramar2009/TideHadera/webForm2.aspx?c=en-us</string>
 
-    <string name="ims_forecast_error"><![CDATA[<html><head></head><body>Oops... Could not load data from IMS, the meteorological service site :(<br/><br/>(Are you connected to the internet?)</body></html>]]></string>
+    <string name="ims_forecast_error"><![CDATA[<html>%s<body>Oops... Could not load data from IMS, the meteorological service site :(<br/><br/>(Are you connected to the internet?)</body></html>]]></string>
     
     <string-array name="city_names">
         <item>Afula</item>

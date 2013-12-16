@@ -18,7 +18,7 @@ public class ImsForecastCitiesFragment extends ImsForecastFragment implements On
 	 * The fragment argument representing the section number for this
 	 * fragment.
 	 */
-	public static final String PREF_CITY_IDX = "City index";
+	public static final String PREF_CITY_CODE = "City code";
 			
 	private String[] cityNames;
 	private int[] cityCodes;
@@ -34,33 +34,20 @@ public class ImsForecastCitiesFragment extends ImsForecastFragment implements On
 
 		// Create an ArrayAdapter using the string array and a default spinner layout
 		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity().getBaseContext(),
-		        R.array.city_names, android.R.layout.simple_spinner_item);
+		        R.array.city_names, R.layout.spinner_layout);
 		// Specify the layout to use when the list of choices appears
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		// Apply the adapter to the spinner
 		spinCities.setAdapter(adapter);
 		SharedPreferences settings = getActivity().getSharedPreferences(MainActivity.GENERAL_PREFS, 0);
-	    cityIdx = settings.getInt(PREF_CITY_IDX, getActivity().getResources().getInteger(R.integer.default_city_index));
+	    cityIdx = cityCode2Idx(settings.getInt(PREF_CITY_CODE, getActivity().getResources().getInteger(R.integer.default_city_code)));
 		spinCities.setSelection(cityIdx);
 		spinCities.setVisibility(View.VISIBLE);
-
+		spinCities.setOnItemSelectedListener(ImsForecastCitiesFragment.this);
+		
 		downloadContent(savedInstanceState); //This already happens onItemSelected
 
 		return rootView;
-	}
-	
-	@Override
-	public void onViewCreated(View view, Bundle savedInstanceState) {
-		isFirstSelection = true;
-		if (spinCities.getOnItemSelectedListener() == null) { //ugly workaround for double onSelected firing on creation...
-			spinCities.post(new Runnable() {
-			    public void run() {
-			    	spinCities.setOnItemSelectedListener(ImsForecastCitiesFragment.this);
-			    }
-			});
-		}
-			
-		super.onViewCreated(view, savedInstanceState);
 	}
 	
 	
@@ -99,14 +86,10 @@ public class ImsForecastCitiesFragment extends ImsForecastFragment implements On
 		return ret;
 	}
 
-	private boolean isFirstSelection;
-	
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-		if (isFirstSelection) {
-			isFirstSelection = false;
+		if (cityIdx == pos)
 			return;
-		}
 		html = null;
 		display();
 		progressCircle.setVisibility(View.VISIBLE);
@@ -117,7 +100,7 @@ public class ImsForecastCitiesFragment extends ImsForecastFragment implements On
 		// All objects are from android.context.Context
 		SharedPreferences settings = getActivity().getSharedPreferences(MainActivity.GENERAL_PREFS, 0);
 		SharedPreferences.Editor editor = settings.edit();
-		editor.putInt(PREF_CITY_IDX, pos);
+		editor.putInt(PREF_CITY_CODE, cityIdx2Code(pos));
 		// Commit the edits!
 		editor.commit();
 	}
@@ -125,6 +108,17 @@ public class ImsForecastCitiesFragment extends ImsForecastFragment implements On
 	@Override
 	public void onNothingSelected(AdapterView<?> parent) {
 		
+	}
+	
+	private int cityCode2Idx(int code) {
+		for (int i = 0; i < cityCodes.length; i++)
+			if (code == cityCodes[i])
+				return i;
+		return 0;
+	}
+	
+	private int cityIdx2Code(int idx) {
+		return cityCodes[idx];
 	}
 	
 }
