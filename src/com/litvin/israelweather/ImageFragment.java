@@ -1,12 +1,9 @@
 package com.litvin.israelweather;
 
 import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -15,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
-import android.widget.TextView;
+
 
 public class ImageFragment extends Fragment implements OnTouchListener, OnSeekBarChangeListener, DownloadImageTask.Callback<Bitmap> {
 	/**
@@ -30,7 +27,6 @@ public class ImageFragment extends Fragment implements OnTouchListener, OnSeekBa
 	private SeekBar seekBar;
 	private ProgressBar progressBar;
 	private ProgressBar progressCircle;
-	private TextView textView;
 	
 	private Bitmap errorBitmap;
 	
@@ -50,7 +46,6 @@ public class ImageFragment extends Fragment implements OnTouchListener, OnSeekBa
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_image,
 				container, false);
-		textView = (TextView) rootView.findViewById(R.id.section_label);
 
 		imgView = (ZoomableImageView) rootView.findViewById(R.id.imageView);
 		imgView.setOnTouchListener(this);
@@ -116,8 +111,7 @@ public class ImageFragment extends Fragment implements OnTouchListener, OnSeekBa
 					dl[i].setCallbackAndId(this, i);
 				} else {
 					dl[i] = new DownloadImageTask(this, i);
-					dl[i].executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, urls[i]);
-					//dl[i].execute(urls[i]);
+					dl[i].executeOnThreads(urls[i]);
 				}
 				
 			} else {

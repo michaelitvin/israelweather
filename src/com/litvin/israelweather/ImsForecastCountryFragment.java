@@ -1,7 +1,6 @@
 package com.litvin.israelweather;
 
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -66,7 +65,7 @@ public class ImsForecastCountryFragment extends ImsForecastFragment {
 			html = savedInstanceState.getString(TAG_HTML);
 		if (html == null) {
 			dlToday = new DownloadHTMLTask(this, ARG_URL_FORECAST_TODAY);
-			dlToday.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, urlToday);
+			dlToday.executeOnThreads(urlToday);
 			dlNextDays = new DownloadHTMLTask(this, ARG_URL_FORECAST_FEW_DAYS);
 			dlNextDays.setHtml("", true);
 		} else {

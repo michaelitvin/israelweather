@@ -38,6 +38,8 @@
         android:layout_alignParentRight="true"
         android:max="1"
         android:progress="0"
+        android:paddingTop="@dimen/seekbar_padding"
+        android:paddingBottom="@dimen/seekbar_padding"
         android:paddingLeft="30dp"
         android:paddingRight="30dp" />
 
@@ -49,6 +51,8 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
+        android:paddingTop="@dimen/seekbar_padding"
+        android:paddingBottom="@dimen/seekbar_padding"
         android:max="1"
         android:progress="0" />
 

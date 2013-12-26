@@ -3,7 +3,7 @@
 
     <string name="app_name">IsraelWeather</string>
     <string name="action_settings">Settings</string>
-    <string name="action_language">eng</string>
+    <string name="action_language">ENG</string>
     <string name="title_section_ims_forecast_country">Country Forecast</string>
     <string name="title_section_ims_forecast_cities">Cities Forecast</string>
     <string name="title_section_rain_radar">Rain Radar</string>

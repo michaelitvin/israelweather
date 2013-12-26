@@ -12,7 +12,9 @@ import java.nio.ByteBuffer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import android.annotation.TargetApi;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.util.Log;
 
 
@@ -41,6 +43,16 @@ public abstract class DownloadTask<Result> extends AsyncTask<String, Void, Resul
     
     protected abstract Result decode(byte[] byteBuf);
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    public void executeOnThreads(String... params) {
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+        executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, params);
+      }
+      else {
+        execute(params);
+      }
+    }
+    
     protected Result doInBackground(String... urls) {
     	 synchronized (MAX_CONCURRENT) {
     	 
@@ -72,14 +84,18 @@ public abstract class DownloadTask<Result> extends AsyncTask<String, Void, Resul
 	            }
 	        } catch (SocketTimeoutException e) {
 	        	retries--;
-	        	String logMsg = "Couldn't download " + urldisplay + "retries=" + retries + ";"
-	        			+ ((e.getMessage()==null)?(("[Unkown error: " + e.toString()) + "]"):("["+e.getMessage())+"]");
-	        	//Log.w("litvin", logMsg);
-	        } catch (SocketException e) {
-	        	retries--;
+	        	/*
 	        	String logMsg = "Couldn't download " + urldisplay + "retries=" + retries + ";"
 	        			+ ((e.getMessage()==null)?(("[Unkown error: " + e.toString()) + "]"):("["+e.getMessage())+"]");
 	        	Log.w("litvin", logMsg);
+	        	//*/
+	        } catch (SocketException e) {
+	        	retries--;
+	        	//*
+	        	String logMsg = "Couldn't download " + urldisplay + "retries=" + retries + ";"
+	        			+ ((e.getMessage()==null)?(("[Unkown error: " + e.toString()) + "]"):("["+e.getMessage())+"]");
+	        	Log.w("litvin", logMsg);
+	        	//*/
 	        } catch (Exception e) {
 	        	retries--;
 	        	String logMsg = "Error downloading " + urldisplay
@@ -90,8 +106,10 @@ public abstract class DownloadTask<Result> extends AsyncTask<String, Void, Resul
 	        }
         }
         finished = true;
+        /*
     	String logMsg = "Done with " + urldisplay + "retries=" + retries + ";success=" + success;
-    	//Log.i("litvin", logMsg);
+    	Log.i("litvin", logMsg);
+    	//*/
         
     	synchronized (MAX_CONCURRENT) {
 			concurrent--;

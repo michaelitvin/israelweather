@@ -4,7 +4,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -64,9 +63,9 @@ public class ImsForecastCitiesFragment extends ImsForecastFragment implements On
 		    String imsForecastNextDaysFmt = String.format(urlNextDays, cityCodes[cityIdx]);
 	
 			dlToday = new DownloadHTMLTask(this, ARG_URL_FORECAST_TODAY);
-			dlToday.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, imsForecastTodayFmt);
+			dlToday.executeOnThreads(imsForecastTodayFmt);
 			dlNextDays = new DownloadHTMLTask(this, ARG_URL_FORECAST_FEW_DAYS);
-			dlNextDays.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, imsForecastNextDaysFmt);
+			dlNextDays.executeOnThreads(imsForecastNextDaysFmt);
 		} else {
 			display();
 			progressCircle.setVisibility(View.GONE);

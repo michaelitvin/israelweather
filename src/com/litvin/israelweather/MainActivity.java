@@ -3,8 +3,8 @@ package com.litvin.israelweather;
 import java.util.Locale;
 
 import android.annotation.TargetApi;
-import android.app.ActionBar;
-import android.app.backup.RestoreObserver;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.content.Context;
 import android.content.Intent;
@@ -16,16 +16,13 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Toast;
 
-public class MainActivity extends FragmentActivity implements
+
+public class MainActivity extends ActionBarActivity implements
 		ActionBar.OnNavigationListener {
 
 	/**
@@ -57,7 +54,7 @@ public class MainActivity extends FragmentActivity implements
 		setContentView(R.layout.activity_main);
 
 		// Set up the action bar to show a dropdown list.
-		final ActionBar actionBar = getActionBar();
+		final ActionBar actionBar = getSupportActionBar();
 		actionBar.setDisplayShowTitleEnabled(false);
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 
@@ -119,6 +116,7 @@ public class MainActivity extends FragmentActivity implements
 		fragmentArray = new Fragment[] {imsForecastCountryFragment, imsForecastCitiesFragment, rainRadarFragmant, tempMapFragment, tideTableFragment};
 	}
 
+	
 	/**
 	 * Backward-compatible version of {@link ActionBar#getThemedContext()} that
 	 * simply returns the {@link android.app.Activity} if
@@ -127,7 +125,7 @@ public class MainActivity extends FragmentActivity implements
 	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 	private Context getActionBarThemedContextCompat() {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-			return getActionBar().getThemedContext();
+			return getSupportActionBar().getThemedContext();
 		} else {
 			return this;
 		}
@@ -138,7 +136,7 @@ public class MainActivity extends FragmentActivity implements
 		// Restore the previously serialized current dropdown position.
 		super.onRestoreInstanceState(savedInstanceState);
 		if (savedInstanceState.containsKey(STATE_SELECTED_NAVIGATION_ITEM)) {
-			getActionBar().setSelectedNavigationItem(
+			getSupportActionBar().setSelectedNavigationItem(
 					savedInstanceState.getInt(STATE_SELECTED_NAVIGATION_ITEM));
 		}
 	}
@@ -147,7 +145,7 @@ public class MainActivity extends FragmentActivity implements
 	public void onSaveInstanceState(Bundle outState) {
 		// Serialize the current dropdown position.
 		super.onSaveInstanceState(outState);
-		outState.putInt(STATE_SELECTED_NAVIGATION_ITEM, getActionBar()
+		outState.putInt(STATE_SELECTED_NAVIGATION_ITEM, getSupportActionBar()
 				.getSelectedNavigationIndex());
 	}
 
@@ -155,7 +153,7 @@ public class MainActivity extends FragmentActivity implements
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
+		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
@@ -178,22 +176,30 @@ public class MainActivity extends FragmentActivity implements
 		res.updateConfiguration(conf, dm); 
 	}
 	
-	public boolean selectLanguage(MenuItem item) {
-		// We need an Editor object to make preference changes.
-		// All objects are from android.context.Context
-		SharedPreferences settings = getSharedPreferences(GENERAL_PREFS, 0);
-		int oldLang = settings.getInt(PREF_LANG, getDefaultLanguage());
-		int newLang = (oldLang+1)%LOCALES.length;
-		SharedPreferences.Editor editor = settings.edit();
-		editor.putInt(PREF_LANG, newLang);
-		// Commit the edits!
-		editor.commit();
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    // Handle item selection
+	    switch (item.getItemId()) {
+	        case R.id.action_language:
+	    		// We need an Editor object to make preference changes.
+	    		// All objects are from android.context.Context
+	    		SharedPreferences settings = getSharedPreferences(GENERAL_PREFS, 0);
+	    		int oldLang = settings.getInt(PREF_LANG, getDefaultLanguage());
+	    		int newLang = (oldLang+1)%LOCALES.length;
+	    		SharedPreferences.Editor editor = settings.edit();
+	    		editor.putInt(PREF_LANG, newLang);
+	    		// Commit the edits!
+	    		editor.commit();
 
-		setLocale(newLang);
-		Intent refresh = new Intent(this, MainActivity.class); 
-		finish();
-		startActivity(refresh);
-		return true;
+	    		setLocale(newLang);
+	    		Intent refresh = new Intent(this, MainActivity.class); 
+	    		finish();
+	    		startActivity(refresh);
+	    		return true;
+	        default:
+	            return super.onOptionsItemSelected(item);
+	    }
 	}
 
 	private int getDefaultLanguage() {

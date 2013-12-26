@@ -99,7 +99,7 @@ public class ZoomableImageView extends View {
         screenDensity = context.getResources().getDisplayMetrics().density;
                        
         initPaints();
-        gestureDetector = new GestureDetector(new MyGestureDetector());
+        gestureDetector = new GestureDetector(context, new MyGestureDetector());
     }
    
     public ZoomableImageView(Context context, AttributeSet attrs) {
@@ -107,7 +107,7 @@ public class ZoomableImageView extends View {
        
         screenDensity = context.getResources().getDisplayMetrics().density;       
         initPaints();
-        gestureDetector = new GestureDetector(new MyGestureDetector());
+        gestureDetector = new GestureDetector(context, new MyGestureDetector());
        
         defaultScale = ZoomableImageView.DEFAULT_SCALE_FIT_INTEGER;
     }
@@ -395,111 +395,113 @@ public class ZoomableImageView extends View {
         point.set(x/2, y/2);
     }
    
-    public void setImageBitmap(final Bitmap b) {
-    	final boolean firstTime = (imgBitmap == null);
+    @Override
+	protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        containerWidth = getWidth();
+        containerHeight = getHeight();
+        
+        if (imgBitmap == null)
+        	return;
+
+        int imgHeight = imgBitmap.getHeight();
+        int imgWidth = imgBitmap.getWidth();
+        
+        if (firstTime) {
+            float scale;
+            int initX = 0;
+            int initY = 0;
+           
+            matrix.reset();
+            
+            if(defaultScale == ZoomableImageView.DEFAULT_SCALE_FIT_INSIDE) {               
+                if(imgWidth > containerWidth) {           
+                    scale = (float)containerWidth / imgWidth;           
+                    float newHeight = imgHeight * scale;           
+                    initY = (containerHeight - (int)newHeight)/2;
+                   
+                    matrix.setScale(scale, scale);
+                    matrix.postTranslate(0, initY);
+                }
+                else {           
+                    scale = (float)containerHeight / imgHeight;
+                    float newWidth = imgWidth * scale;
+                    initX = (containerWidth - (int)newWidth)/2;
+                   
+                    matrix.setScale(scale, scale);
+                    matrix.postTranslate(initX, 0);
+                }
+               
+                curX = initX;
+                curY = initY;
+               
+                currentScale = scale;
+                //minScale = scale;
+            }
+            else if(defaultScale == ZoomableImageView.DEFAULT_SCALE_FIT_INTEGER) {               
+                if(imgWidth > containerWidth) {           
+                    scale = Math.max(minScale, Math.round((float)containerWidth / imgWidth));
+                    float newHeight = imgHeight * scale;           
+                    initY = (containerHeight - (int)newHeight)/2;
+                   
+                    matrix.setScale(scale, scale);
+                    matrix.postTranslate(0, initY);
+                }
+                else {           
+                    scale = Math.max(minScale, Math.round((float)containerHeight / imgHeight));
+                    float newWidth = imgWidth * scale;
+                    initX = (containerWidth - (int)newWidth)/2;
+                   
+                    matrix.setScale(scale, scale);
+                    matrix.postTranslate(initX, 0);
+                }
+               
+                curX = initX;
+                curY = initY;
+               
+                currentScale = scale;
+                //minScale = scale;
+            }
+            else {
+                if(imgWidth > containerWidth) {
+                    initX = 0;
+                    if(imgHeight > containerHeight) {                       
+                        initY = 0;
+                    }
+                    else {                       
+                        initY = (containerHeight - (int)imgHeight)/2;
+                    }
+                }
+                else {                               
+                    initX = (containerWidth - (int)imgWidth)/2;
+                    if(imgHeight > containerHeight) {
+                        initY = 0;
+                    }
+                    else {
+                        initY = (containerHeight - (int)imgHeight)/2;
+                    }
+                }
+                matrix.postTranslate(initX, initY);
+               
+                curX = initX;
+                curY = initY;
+               
+                currentScale = 1.0f;
+                //minScale = 1.0f;               
+            }
+        }
+        initialScale = currentScale;
+        checkImageConstraints();
+        invalidate();
+	
+		super.onLayout(changed, left, top, right, bottom);
+	}
+
+    private boolean firstTime = true;
+    
+	public void setImageBitmap(final Bitmap b) {
+    	firstTime = (imgBitmap == null);
     	if(b != null) {
     		imgBitmap = b;
-	    	addOnLayoutChangeListener(new OnLayoutChangeListener() {
-				
-				@Override
-				public void onLayoutChange(View v, int left, int top, int right,
-						int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-					removeOnLayoutChangeListener(this);
-					
-		            containerWidth = getWidth();
-		            containerHeight = getHeight();
-		                       
-		            int imgHeight = b.getHeight();
-		            int imgWidth = b.getWidth();
-		            
-		            if (firstTime || imgHeight != imgBitmap.getHeight() || imgWidth != imgBitmap.getWidth()) {
-			            float scale;
-			            int initX = 0;
-			            int initY = 0;
-			           
-			            matrix.reset();
-			            
-			            if(defaultScale == ZoomableImageView.DEFAULT_SCALE_FIT_INSIDE) {               
-			                if(imgWidth > containerWidth) {           
-			                    scale = (float)containerWidth / imgWidth;           
-			                    float newHeight = imgHeight * scale;           
-			                    initY = (containerHeight - (int)newHeight)/2;
-			                   
-			                    matrix.setScale(scale, scale);
-			                    matrix.postTranslate(0, initY);
-			                }
-			                else {           
-			                    scale = (float)containerHeight / imgHeight;
-			                    float newWidth = imgWidth * scale;
-			                    initX = (containerWidth - (int)newWidth)/2;
-			                   
-			                    matrix.setScale(scale, scale);
-			                    matrix.postTranslate(initX, 0);
-			                }
-			               
-			                curX = initX;
-			                curY = initY;
-			               
-			                currentScale = scale;
-			                //minScale = scale;
-			            }
-			            else if(defaultScale == ZoomableImageView.DEFAULT_SCALE_FIT_INTEGER) {               
-			                if(imgWidth > containerWidth) {           
-			                    scale = Math.max(minScale, Math.round((float)containerWidth / imgWidth));
-			                    float newHeight = imgHeight * scale;           
-			                    initY = (containerHeight - (int)newHeight)/2;
-			                   
-			                    matrix.setScale(scale, scale);
-			                    matrix.postTranslate(0, initY);
-			                }
-			                else {           
-			                    scale = Math.max(minScale, Math.round((float)containerHeight / imgHeight));
-			                    float newWidth = imgWidth * scale;
-			                    initX = (containerWidth - (int)newWidth)/2;
-			                   
-			                    matrix.setScale(scale, scale);
-			                    matrix.postTranslate(initX, 0);
-			                }
-			               
-			                curX = initX;
-			                curY = initY;
-			               
-			                currentScale = scale;
-			                //minScale = scale;
-			            }
-			            else {
-			                if(imgWidth > containerWidth) {
-			                    initX = 0;
-			                    if(imgHeight > containerHeight) {                       
-			                        initY = 0;
-			                    }
-			                    else {                       
-			                        initY = (containerHeight - (int)imgHeight)/2;
-			                    }
-			                }
-			                else {                               
-			                    initX = (containerWidth - (int)imgWidth)/2;
-			                    if(imgHeight > containerHeight) {
-			                        initY = 0;
-			                    }
-			                    else {
-			                        initY = (containerHeight - (int)imgHeight)/2;
-			                    }
-			                }
-			                matrix.postTranslate(initX, initY);
-			               
-			                curX = initX;
-			                curY = initY;
-			               
-			                currentScale = 1.0f;
-			                //minScale = 1.0f;               
-			            }
-		            }
-		            initialScale = currentScale;
-		            checkImageConstraints();
-		            invalidate();
-				}
-			});
 	    	checkImageConstraints();
             invalidate();           
         }
@@ -612,6 +614,7 @@ public class ZoomableImageView extends View {
     };
    
    /** Show an event in the LogCat view, for debugging */
+   @SuppressWarnings({ "unused", "deprecation" })
    private void dumpEvent(MotionEvent event) {
       String names[] = { "DOWN", "UP", "MOVE", "CANCEL", "OUTSIDE", "POINTER_DOWN", "POINTER_UP", "7?", "8?", "9?" };
       StringBuilder sb = new StringBuilder();

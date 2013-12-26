@@ -3,7 +3,7 @@
 
     <string name="app_name">Погода в Израиле</string>
     <string name="action_settings">Настройки</string>
-    <string name="action_language">рус</string>
+    <string name="action_language">РУС</string>
     <string name="title_section_ims_forecast_country">Прогноз в стране</string>
     <string name="title_section_ims_forecast_cities">Прогноз по городам</string>
     <string name="title_section_rain_radar">Дождевой радар</string>

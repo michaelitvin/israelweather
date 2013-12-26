@@ -26,7 +26,7 @@ import android.util.Log;
  * @author Ian Brown
  * 
  **/
-
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class CookieManager {
 
 	private Map store;
@@ -46,7 +46,7 @@ public class CookieManager {
 
 	public CookieManager() {
 		store = new HashMap();
-		dateFormat = new SimpleDateFormat(DATE_FORMAT);
+		dateFormat = new SimpleDateFormat(DATE_FORMAT, new Locale("iw"));
 	}
 
 	public synchronized void storeCookie(URLConnection conn, String cookie) {
