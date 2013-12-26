@@ -1,5 +1,10 @@
 package com.litvin.israelweather;
 
+import com.google.analytics.tracking.android.EasyTracker;
+import com.google.analytics.tracking.android.Fields;
+import com.google.analytics.tracking.android.MapBuilder;
+
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -15,10 +20,14 @@ public abstract class ImsForecastFragment extends Fragment implements DownloadTa
 	 * The fragment argument representing the section number for this
 	 * fragment.
 	 */
+	public static final String ARG_SCREEN_NAME = "screen_name";
+	
 	public static final String ARG_URL_FORECAST_TODAY = "urlForecastToday";
 	public static final String ARG_URL_FORECAST_FEW_DAYS = "urlForecastNextDays";
 	
 	public static final String TAG_HTML = "html";
+	
+	private String screenName;
 	
 	protected ProgressBar progressCircle;
 	protected WebView webView;
@@ -34,6 +43,8 @@ public abstract class ImsForecastFragment extends Fragment implements DownloadTa
 		View rootView = inflater.inflate(R.layout.fragment_ims_forecast,
 				container, false);
 
+		screenName = getArguments().getString(ARG_SCREEN_NAME);
+		
 		urlToday = getArguments().getString(ARG_URL_FORECAST_TODAY);
 		urlNextDays = getArguments().getString(ARG_URL_FORECAST_FEW_DAYS);
 
@@ -93,6 +104,17 @@ public abstract class ImsForecastFragment extends Fragment implements DownloadTa
 			generateSuccessHtml();
 			progressCircle.setVisibility(View.GONE);
 		}
+	}
+	
+	@Override
+	public void onStart() {
+		Activity activity = getActivity();
+		if (activity != null) {
+			EasyTracker tracker = EasyTracker.getInstance(activity);
+			tracker.set(Fields.SCREEN_NAME, screenName);
+			tracker.send(MapBuilder.createAppView().build());
+		}
+		super.onStart();
 	}
 	
 }

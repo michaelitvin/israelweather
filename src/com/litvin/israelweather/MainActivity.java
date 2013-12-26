@@ -2,6 +2,8 @@ package com.litvin.israelweather;
 
 import java.util.Locale;
 
+import com.google.analytics.tracking.android.EasyTracker;
+
 import android.annotation.TargetApi;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -93,25 +95,32 @@ public class MainActivity extends ActionBarActivity implements
 		tideTableFragment.setArguments(tideTableFragmentArgs);
 		*/
 
-		imsForecastCountryFragment = (ImsForecastCountryFragment)getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAGS[0]);
+		String fragmentTag;
+		
+		fragmentTag = FRAGMENT_TAGS[0];
+		imsForecastCountryFragment = (ImsForecastCountryFragment)getSupportFragmentManager().findFragmentByTag(fragmentTag);
 		if (imsForecastCountryFragment == null)
-			imsForecastCountryFragment = ImsForecastCountryFragment.newInstance(getString(R.string.ims_forecast_home_url), savedInstanceState);
+			imsForecastCountryFragment = ImsForecastCountryFragment.newInstance(fragmentTag, getString(R.string.ims_forecast_home_url), savedInstanceState);
 		
-		imsForecastCitiesFragment = (ImsForecastCitiesFragment)getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAGS[1]);
+		fragmentTag = FRAGMENT_TAGS[1];
+		imsForecastCitiesFragment = (ImsForecastCitiesFragment)getSupportFragmentManager().findFragmentByTag(fragmentTag);
 		if (imsForecastCitiesFragment == null)
-			imsForecastCitiesFragment = ImsForecastCitiesFragment.newInstance(getString(R.string.ims_forecast_today_url), getString(R.string.ims_forecast_next_days_url), savedInstanceState);
+			imsForecastCitiesFragment = ImsForecastCitiesFragment.newInstance(fragmentTag, getString(R.string.ims_forecast_today_url), getString(R.string.ims_forecast_next_days_url), savedInstanceState);
 
-		rainRadarFragmant = (ImageFragment)getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAGS[2]);
+		fragmentTag = FRAGMENT_TAGS[2];
+		rainRadarFragmant = (ImageFragment)getSupportFragmentManager().findFragmentByTag(fragmentTag);
 		if (rainRadarFragmant == null)
-			rainRadarFragmant = ImageFragment.newInstance(rainRadarUrls, savedInstanceState, errorBitmap);
+			rainRadarFragmant = ImageFragment.newInstance(fragmentTag, rainRadarUrls, savedInstanceState, errorBitmap);
 
-		tempMapFragment = (ImageFragment)getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAGS[3]);
+		fragmentTag = FRAGMENT_TAGS[3];
+		tempMapFragment = (ImageFragment)getSupportFragmentManager().findFragmentByTag(fragmentTag);
 		if (tempMapFragment == null)
-			tempMapFragment = ImageFragment.newInstance(new String[] {getString(R.string.ims_temperatures_map_url)}, savedInstanceState, errorBitmap);
+			tempMapFragment = ImageFragment.newInstance(fragmentTag, new String[] {getString(R.string.ims_temperatures_map_url)}, savedInstanceState, errorBitmap);
 		
-		tideTableFragment = (ImageFragment)getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAGS[4]);
+		fragmentTag = FRAGMENT_TAGS[4];
+		tideTableFragment = (ImageFragment)getSupportFragmentManager().findFragmentByTag(fragmentTag);
 		if (tideTableFragment == null)
-			tideTableFragment = ImageFragment.newInstance(new String[] {getString(R.string.isramar_tide_table_url)}, savedInstanceState, errorBitmap);
+			tideTableFragment = ImageFragment.newInstance(fragmentTag, new String[] {getString(R.string.isramar_tide_table_url)}, savedInstanceState, errorBitmap);
 		
 		fragmentArray = new Fragment[] {imsForecastCountryFragment, imsForecastCitiesFragment, rainRadarFragmant, tempMapFragment, tideTableFragment};
 	}
@@ -214,7 +223,18 @@ public class MainActivity extends ActionBarActivity implements
 		}
 		return defLang;
 	}
+
+	@Override
+	protected void onStart() {
+		EasyTracker.getInstance(this).activityStart(this); 
+		super.onStart();
+	}
 	
+	@Override
+	protected void onStop() {
+		EasyTracker.getInstance(this).activityStop(this);
+		super.onStop();
+	}
 	
 	
 }

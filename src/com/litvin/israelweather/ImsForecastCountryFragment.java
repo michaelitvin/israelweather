@@ -75,10 +75,11 @@ public class ImsForecastCountryFragment extends ImsForecastFragment {
 	}
 	
 	
-	public static ImsForecastCountryFragment newInstance(String urlHomepage, Bundle state) {
+	public static ImsForecastCountryFragment newInstance(String screenName, String urlHomepage, Bundle state) {
 		ImsForecastCountryFragment ret = new ImsForecastCountryFragment();
 		ret.setRetainInstance(true);
 		Bundle args = new Bundle();
+		args.putString(ImageFragment.ARG_SCREEN_NAME, screenName);
 		args.putString(ImsForecastCountryFragment.ARG_URL_FORECAST_TODAY, urlHomepage);
 		ret.setArguments(args);
 		//ret.downloadContent(urlToday, urlNextDays);

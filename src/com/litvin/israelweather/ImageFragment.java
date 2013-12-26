@@ -1,5 +1,10 @@
 package com.litvin.israelweather;
 
+import com.google.analytics.tracking.android.EasyTracker;
+import com.google.analytics.tracking.android.Fields;
+import com.google.analytics.tracking.android.MapBuilder;
+
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -19,6 +24,8 @@ public class ImageFragment extends Fragment implements OnTouchListener, OnSeekBa
 	 * The fragment argument representing the section number for this
 	 * fragment.
 	 */
+	public static final String ARG_SCREEN_NAME = "screen_name";
+	
 	public static final String ARG_URLS = "urls";
 	public static final String ARG_ERROR_BITMAP = "error_bitmap";
 	public static final String TAG_NCOMPLETE = "nComplete";
@@ -33,6 +40,8 @@ public class ImageFragment extends Fragment implements OnTouchListener, OnSeekBa
 	private int nComplete;
 	private int lastDownloadedId = 0;
 
+	private String screenName;
+	
 	private DownloadImageTask[] dl;
 	private String[] urls;
 	
@@ -50,6 +59,8 @@ public class ImageFragment extends Fragment implements OnTouchListener, OnSeekBa
 		imgView = (ZoomableImageView) rootView.findViewById(R.id.imageView);
 		imgView.setOnTouchListener(this);
 
+		screenName = getArguments().getString(ARG_SCREEN_NAME);
+		
 		urls = getArguments().getStringArray(ARG_URLS);
 		errorBitmap = (Bitmap)getArguments().getParcelable(ARG_ERROR_BITMAP);
 
@@ -122,11 +133,12 @@ public class ImageFragment extends Fragment implements OnTouchListener, OnSeekBa
 		}
 	}
 	
-	public static ImageFragment newInstance(String[] urls, Bundle state, Bitmap errorBitmap) {
+	public static ImageFragment newInstance(String screenName, String[] urls, Bundle state, Bitmap errorBitmap) {
 		ImageFragment ret = new ImageFragment();
 		ret.setRetainInstance(true);
 		
 		Bundle args = new Bundle();
+		args.putString(ImageFragment.ARG_SCREEN_NAME, screenName);
 		args.putStringArray(ImageFragment.ARG_URLS, urls);
 		args.putParcelable(ImageFragment.ARG_ERROR_BITMAP, errorBitmap);
 		ret.setArguments(args);
@@ -189,6 +201,17 @@ public class ImageFragment extends Fragment implements OnTouchListener, OnSeekBa
 	
 	private String getBitmapTag(int i) {
 		return "TAG_BM" + i;
+	}
+
+	@Override
+	public void onStart() {
+		Activity activity = getActivity();
+		if (activity != null) {
+			EasyTracker tracker = EasyTracker.getInstance(activity);
+			tracker.set(Fields.SCREEN_NAME, screenName);
+			tracker.send(MapBuilder.createAppView().build());
+		}
+		super.onStart();
 	}
 
 }

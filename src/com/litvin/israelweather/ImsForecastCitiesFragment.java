@@ -73,10 +73,11 @@ public class ImsForecastCitiesFragment extends ImsForecastFragment implements On
 	}
 	
 	
-	public static ImsForecastCitiesFragment newInstance(String urlToday, String urlNextDays, Bundle state) {
+	public static ImsForecastCitiesFragment newInstance(String screenName, String urlToday, String urlNextDays, Bundle state) {
 		ImsForecastCitiesFragment ret = new ImsForecastCitiesFragment();
 		ret.setRetainInstance(true);
 		Bundle args = new Bundle();
+		args.putString(ImageFragment.ARG_SCREEN_NAME, screenName);
 		args.putString(ImsForecastCitiesFragment.ARG_URL_FORECAST_TODAY, urlToday);
 		args.putString(ImsForecastCitiesFragment.ARG_URL_FORECAST_FEW_DAYS, urlNextDays);
 		ret.setArguments(args);
