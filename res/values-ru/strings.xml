@@ -6,6 +6,7 @@
     <string name="action_language">РУС</string>
     <string name="title_section_ims_forecast_country">Прогноз в стране</string>
     <string name="title_section_ims_forecast_cities">Прогноз по городам</string>
+    <string name="title_section_rain_forecast">Прогноз дождя</string>
     <string name="title_section_rain_radar">Дождевой радар</string>
     <string name="title_section_temperatures_map">Карта температур</string>
     <string name="title_section_tide_table">Прилив и отлив</string>

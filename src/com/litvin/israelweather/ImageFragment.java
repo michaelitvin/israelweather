@@ -12,14 +12,17 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
+import android.widget.Spinner;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
 
-public class ImageFragment extends Fragment implements OnTouchListener, OnSeekBarChangeListener, DownloadImageTask.Callback<Bitmap> {
+public class ImageFragment extends Fragment implements OnTouchListener, OnSeekBarChangeListener, OnClickListener, DownloadImageTask.Callback<Bitmap> {
 	/**
 	 * The fragment argument representing the section number for this
 	 * fragment.
@@ -30,20 +33,24 @@ public class ImageFragment extends Fragment implements OnTouchListener, OnSeekBa
 	public static final String ARG_ERROR_BITMAP = "error_bitmap";
 	public static final String TAG_NCOMPLETE = "nComplete";
 	
-	private ZoomableImageView imgView;
-	private SeekBar seekBar;
-	private ProgressBar progressBar;
-	private ProgressBar progressCircle;
-	
-	private Bitmap errorBitmap;
-	
-	private int nComplete;
-	private int lastDownloadedId = 0;
+	protected ZoomableImageView imgView;
+	protected SeekBar seekBar;
+	protected ImageButton btnNext, btnPrev;
+	protected ProgressBar progressBar;
+	protected ProgressBar progressCircle;
+	protected Spinner spinImages;
 
-	private String screenName;
+	protected boolean showImagesProgress = true;
 	
-	private DownloadImageTask[] dl;
-	private String[] urls;
+	protected Bitmap errorBitmap;
+	
+	protected int nComplete;
+	protected int lastDownloadedId = 0;
+
+	protected String screenName;
+	
+	protected DownloadImageTask[] dl;
+	protected String[] urls;
 	
 	public ImageFragment() {
 		urls = new String[0];
@@ -68,11 +75,18 @@ public class ImageFragment extends Fragment implements OnTouchListener, OnSeekBa
 		seekBar.setOnSeekBarChangeListener(this);
 		seekBar.setMax(urls.length-1);
 		seekBar.setBackgroundColor(0x4422cc33);
-		seekBar.setVisibility(View.GONE);
+		setSeekBarVisibility(View.GONE, View.GONE);
 		progressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
 		progressBar.setMax(urls.length);
 		progressBar.setProgress(0);
 		progressBar.setVisibility(View.VISIBLE);
+		
+		btnPrev = (ImageButton) rootView.findViewById(R.id.btnPrev);
+		btnPrev.setOnClickListener(this);
+		btnNext = (ImageButton) rootView.findViewById(R.id.btnNext);
+		btnNext.setOnClickListener(this);
+		
+		spinImages = (Spinner) rootView.findViewById(R.id.spinImages);
 
 		progressCircle = (ProgressBar) rootView.findViewById(R.id.progressCircle);
 		progressCircle.setVisibility(View.VISIBLE);
@@ -183,7 +197,7 @@ public class ImageFragment extends Fragment implements OnTouchListener, OnSeekBa
 		Integer intid = (Integer)id;
 		//imgView.setImageBitmap(dl[intid].getBitmap(errorBitmap));
 		//*
-		if (success && intid > lastDownloadedId) {
+		if (showImagesProgress && success && intid > lastDownloadedId) {
 			imgView.setImageBitmap(result);
 			lastDownloadedId = intid;
 		}
@@ -192,14 +206,14 @@ public class ImageFragment extends Fragment implements OnTouchListener, OnSeekBa
 		//*/
 		if (dl.length == nComplete) {
 			if (dl.length > 1)
-				seekBar.setVisibility(View.VISIBLE);
+				setSeekBarVisibility(View.VISIBLE, View.VISIBLE);
 			progressBar.setVisibility(View.GONE);
 			progressCircle.setVisibility(View.GONE);
 			seekBar.setProgress(urls.length-1);
 		}
 	}
 	
-	private String getBitmapTag(int i) {
+	protected String getBitmapTag(int i) {
 		return "TAG_BM" + i;
 	}
 
@@ -212,6 +226,24 @@ public class ImageFragment extends Fragment implements OnTouchListener, OnSeekBa
 			tracker.send(MapBuilder.createAppView().build());
 		}
 		super.onStart();
+	}
+	
+	protected void setSeekBarVisibility(int seekBarVisiblity, int buttonsVisiblity) {
+		if (seekBar != null)
+			seekBar.setVisibility(seekBarVisiblity);
+		if (btnPrev != null && btnNext != null) {
+			btnPrev.setVisibility(buttonsVisiblity);
+			btnNext.setVisibility(buttonsVisiblity);
+		}
+	}
+
+	@Override
+	public void onClick(View v) {
+		int val = seekBar.getProgress();
+		if (v == btnPrev && val > 0)
+			seekBar.setProgress(val-1);
+		else if (v == btnNext && val < seekBar.getMax())
+			seekBar.setProgress(val+1);
 	}
 
 }

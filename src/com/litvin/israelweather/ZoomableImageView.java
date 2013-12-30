@@ -503,9 +503,9 @@ public class ZoomableImageView extends View {
     	if(b != null) {
     		imgBitmap = b;
 	    	checkImageConstraints();
-            invalidate();           
-        }
-        else {
+	    	requestLayout();
+            invalidate();
+        } else {
             Log.d(TAG, "bitmap is null");
         }
     }
