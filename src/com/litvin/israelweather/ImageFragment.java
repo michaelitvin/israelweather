@@ -229,8 +229,9 @@ public class ImageFragment extends Fragment implements OnTouchListener, OnSeekBa
 	}
 	
 	protected void setSeekBarVisibility(int seekBarVisiblity, int buttonsVisiblity) {
-		if (seekBar != null)
+		if (seekBar != null) {
 			seekBar.setVisibility(seekBarVisiblity);
+		}
 		if (btnPrev != null && btnNext != null) {
 			btnPrev.setVisibility(buttonsVisiblity);
 			btnNext.setVisibility(buttonsVisiblity);

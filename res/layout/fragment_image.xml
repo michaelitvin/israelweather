@@ -8,56 +8,73 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity$ImageFragment" >
 
-    <com.litvin.israelweather.ZoomableImageView
-        android:id="@+id/imageView"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentBottom="true"
-        android:scaleType="center"
-        android:antialias="true"
-        />
+        android:orientation="vertical" >
 
-	<Spinner
-        android:id="@+id/spinImages"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:visibility="gone"
-        />
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text=""
+            android:textAlignment="center"
+            android:textSize="25sp"
+            android:visibility="gone" />
 
-    <SeekBar
-        android:id="@+id/seekBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:max="1"
-        android:progress="0"
-        android:paddingTop="@dimen/seekbar_padding"
-        android:paddingBottom="@dimen/seekbar_padding"
-        android:paddingLeft="30dp"
-        android:paddingRight="30dp"
-        android:layout_toRightOf="@+id/btnPrev"
-        android:layout_toLeftOf="@+id/btnNext"
-        android:visibility="gone"
-        />
+        <com.litvin.israelweather.ZoomableImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:antialias="true"
+            android:scaleType="center" />
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:paddingTop="@dimen/seekbar_padding"
-        android:paddingBottom="@dimen/seekbar_padding"
-        android:max="1"
-        android:progress="0" />
+        <Spinner
+            android:id="@+id/spinImages"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <SeekBar
+                android:id="@+id/seekBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="1"
+                android:paddingBottom="@dimen/seekbar_padding"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp"
+                android:paddingTop="@dimen/seekbar_padding"
+                android:layout_toRightOf="@+id/btnPrev"
+                android:layout_toLeftOf="@+id/btnNext"
+                android:progress="0"
+                android:visibility="gone" />
+
+            <ImageButton
+                android:id="@+id/btnNext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:background="@android:drawable/ic_media_ff"
+                android:contentDescription="+"
+                android:visibility="gone" />
+
+            <ImageButton
+                android:id="@+id/btnPrev"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:background="@android:drawable/ic_media_rew"
+                android:contentDescription="-"
+                android:visibility="gone" />
+        </RelativeLayout>
+
+    </LinearLayout>
 
     <ProgressBar
         android:id="@+id/progressCircle"
@@ -67,28 +84,16 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true" />
 
-    <ImageButton
-        android:id="@+id/btnNext"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/seekBar"
-        android:background="@android:drawable/ic_media_ff"
-        android:contentDescription="+"
-        android:visibility="gone"
-        />
-
-    <ImageButton
-        android:id="@+id/btnPrev"
-        android:layout_width="wrap_content"
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignTop="@+id/seekBar"
-        android:background="@android:drawable/ic_media_rew"
-        android:contentDescription="-"
-        android:visibility="gone"
-        />
-    
+        android:max="1"
+        android:paddingBottom="@dimen/seekbar_padding"
+        android:paddingTop="@dimen/seekbar_padding"
+        android:progress="0" />
+
 </RelativeLayout>
