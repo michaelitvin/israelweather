@@ -18,8 +18,8 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
-import android.widget.Spinner;
 import android.widget.SeekBar.OnSeekBarChangeListener;
+import android.widget.TextView;
 
 
 public class ImageFragment extends Fragment implements OnTouchListener, OnSeekBarChangeListener, OnClickListener, DownloadImageTask.Callback<Bitmap> {
@@ -38,7 +38,7 @@ public class ImageFragment extends Fragment implements OnTouchListener, OnSeekBa
 	protected ImageButton btnNext, btnPrev;
 	protected ProgressBar progressBar;
 	protected ProgressBar progressCircle;
-	protected Spinner spinImages;
+	protected TextView textView;
 
 	protected boolean showImagesProgress = true;
 	
@@ -72,9 +72,9 @@ public class ImageFragment extends Fragment implements OnTouchListener, OnSeekBa
 		errorBitmap = (Bitmap)getArguments().getParcelable(ARG_ERROR_BITMAP);
 
 		seekBar = (SeekBar) rootView.findViewById(R.id.seekBar);
-		seekBar.setOnSeekBarChangeListener(this);
 		seekBar.setMax(urls.length-1);
-		seekBar.setBackgroundColor(0x4422cc33);
+		seekBar.setOnSeekBarChangeListener(this);
+		
 		setSeekBarVisibility(View.GONE, View.GONE);
 		progressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
 		progressBar.setMax(urls.length);
@@ -85,8 +85,13 @@ public class ImageFragment extends Fragment implements OnTouchListener, OnSeekBa
 		btnPrev.setOnClickListener(this);
 		btnNext = (ImageButton) rootView.findViewById(R.id.btnNext);
 		btnNext.setOnClickListener(this);
+
+		//seekBar.setBackgroundColor(0x4422cc33);
+		//seekBar.setBackgroundColor(0xffF7FFEF);
+		//btnPrev.setBackgroundColor(0xffccff99);
+		//btnNext.setBackgroundColor(0xffccff99);
 		
-		spinImages = (Spinner) rootView.findViewById(R.id.spinImages);
+		textView = (TextView) rootView.findViewById(R.id.textView);
 
 		progressCircle = (ProgressBar) rootView.findViewById(R.id.progressCircle);
 		progressCircle.setVisibility(View.VISIBLE);

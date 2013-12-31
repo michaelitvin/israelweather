@@ -18,7 +18,9 @@ import android.view.View;
 import android.view.GestureDetector.SimpleOnGestureListener;
 
 public class ZoomableImageView extends View {
-    private static final String TAG = "ZoomableImageView";       
+    private static final String TAG = "ZoomableImageView";
+    private final float INIT_SCALE_COEFF = 1.2f;
+    private final int MAX_INIT_SCALE = 2;
    
     private Bitmap imgBitmap = null;
    
@@ -97,7 +99,7 @@ public class ZoomableImageView extends View {
        
         maxScale = context.getResources().getInteger(R.integer.max_image_scale);
         screenDensity = context.getResources().getDisplayMetrics().density;
-                       
+
         initPaints();
         gestureDetector = new GestureDetector(context, new MyGestureDetector());
     }
@@ -158,7 +160,7 @@ public class ZoomableImageView extends View {
             }
             else if(defaultScale == ZoomableImageView.DEFAULT_SCALE_FIT_INTEGER) {               
                 if(imgWidth > containerWidth) {           
-                    scale = Math.max(minScale, Math.round((float)containerWidth / imgWidth));           
+                    scale = Math.min(MAX_INIT_SCALE, Math.max(minScale, Math.round(INIT_SCALE_COEFF * (float)containerWidth / imgWidth)));           
                     float newHeight = imgHeight * scale;           
                     initY = (containerHeight - (int)newHeight)/2;
                    
@@ -166,7 +168,7 @@ public class ZoomableImageView extends View {
                     matrix.postTranslate(0, initY);
                 }
                 else {           
-                    scale = Math.max(minScale, Math.round((float)containerHeight / imgHeight));
+                    scale = Math.min(MAX_INIT_SCALE, Math.max(minScale, Math.round(INIT_SCALE_COEFF * (float)containerHeight / imgHeight)));
                     float newWidth = imgWidth * scale;
                     initX = (containerWidth - (int)newWidth)/2;
                    
@@ -204,9 +206,10 @@ public class ZoomableImageView extends View {
    
     @Override
     protected void onDraw(Canvas canvas) {
-        if(imgBitmap != null && canvas != null)
-        {                                           
-            canvas.drawBitmap(imgBitmap, matrix, background);                                                   
+    	super.onDraw(canvas);
+    	if (canvas != null) {
+	        if(imgBitmap != null)                       
+	            canvas.drawBitmap(imgBitmap, matrix, background);                                                   
         }
     }
    
@@ -439,7 +442,7 @@ public class ZoomableImageView extends View {
             }
             else if(defaultScale == ZoomableImageView.DEFAULT_SCALE_FIT_INTEGER) {               
                 if(imgWidth > containerWidth) {           
-                    scale = Math.max(minScale, Math.round((float)containerWidth / imgWidth));
+                    scale = Math.min(MAX_INIT_SCALE, Math.max(minScale, Math.round(INIT_SCALE_COEFF * (float)containerWidth / imgWidth)));
                     float newHeight = imgHeight * scale;           
                     initY = (containerHeight - (int)newHeight)/2;
                    
@@ -447,7 +450,7 @@ public class ZoomableImageView extends View {
                     matrix.postTranslate(0, initY);
                 }
                 else {           
-                    scale = Math.max(minScale, Math.round((float)containerHeight / imgHeight));
+                    scale = Math.min(MAX_INIT_SCALE, Math.max(minScale, Math.round(INIT_SCALE_COEFF * (float)containerHeight / imgHeight)));
                     float newWidth = imgWidth * scale;
                     initX = (containerWidth - (int)newWidth)/2;
                    

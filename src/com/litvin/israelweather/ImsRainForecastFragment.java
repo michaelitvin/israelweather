@@ -11,19 +11,16 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.SeekBar;
 
-
-public class ImsRainForecastFragment extends ImageFragment implements OnItemSelectedListener {
+public class ImsRainForecastFragment extends ImageFragment {
 
 	private static final int NX = 4;
 	private static final int NY = 5;
 	private static final int IMG_WIDTH = 166+12;
-	private static final int IMG_HEIGHT = 370+24;
+	private static final int IMG_HEIGHT = 370+24;//370+12;
 	private static final int IMG_X0 = 27-6;
-	private static final int IMG_Y0 = 218-18;
+	private static final int IMG_Y0 = 218-18;//218-6;
 	private static final int IMG_X_OFFSET = 200;
 	private static final int IMG_Y_OFFSET = 400;
 	
@@ -31,9 +28,11 @@ public class ImsRainForecastFragment extends ImageFragment implements OnItemSele
 	private static final int HOUR_RES = 6;
 	
 	private int firstImageIdx = -1;
+	private int closestMap;
 	private SimpleDateFormat dateFormat;
 	
 	private Bitmap imgs[] = new Bitmap[NX*NY];
+	private ArrayList<CharSequence> labels;
 	
 	public ImsRainForecastFragment() {
 		super();
@@ -46,8 +45,6 @@ public class ImsRainForecastFragment extends ImageFragment implements OnItemSele
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View rootView = super.onCreateView(inflater, container, savedInstanceState);
-		
-		spinImages.setOnItemSelectedListener(ImsRainForecastFragment.this);
 		
 		dateFormat = new SimpleDateFormat("dd/MM", getResources().getConfiguration().locale);
 		
@@ -79,18 +76,15 @@ public class ImsRainForecastFragment extends ImageFragment implements OnItemSele
 		progressBar.setProgress(nComplete);
 			
 		if (dl.length == nComplete) {
-			spinImages.setVisibility(View.VISIBLE);
+			labels = getLabels();
+			seekBar.setMax(labels.size()-1);
+			
 			progressBar.setVisibility(View.GONE);
 			progressCircle.setVisibility(View.GONE);
+			textView.setVisibility(View.VISIBLE);
+			setSeekBarVisibility(View.VISIBLE, View.VISIBLE);
 			
-			// Create an ArrayAdapter using the string array and a default spinner layout
-			ArrayList<CharSequence> vals = getLabels();
-			ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(getActivity().getBaseContext(), R.layout.spinner_layout, vals);
-			// Specify the layout to use when the list of choices appears
-			adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-			// Apply the adapter to the spinner
-			spinImages.setAdapter(adapter);
-			spinImages.setSelection(0);
+			seekBar.setProgress(closestMap);
 		}
 	}
 	
@@ -131,23 +125,34 @@ public class ImsRainForecastFragment extends ImageFragment implements OnItemSele
 		
 		Calendar calNow = Calendar.getInstance();
 		long now = calNow.getTimeInMillis();
+		int hourNow = calNow.get(Calendar.HOUR_OF_DAY);
 		TimeZone tz = calNow.getTimeZone();
 		long initial = now;
 		calNow.setTimeZone(TimeZone.getTimeZone("UTC"));
-		if (firstImageIdx >= 2 && calNow.get(Calendar.HOUR_OF_DAY) < 12)
+		if (firstImageIdx >= 2 && hourNow < 16) {
 			initial -= 1000*60*60*24; //Subtract day
+			hourNow += 24;
+		}
 		
 		Calendar calText = new GregorianCalendar(tz);
 		
+		int hourDiff = 9999;
+		
 		ArrayList<CharSequence> vals = new ArrayList<CharSequence>(NX*NY-firstImageIdx);
-		for (int i = 0; i < NX*NY-1; i++) {
-			int dayIndex = (i+firstImageIdx+1) / NX;
+		for (int i = firstImageIdx; i < NX*NY-1; i++) {
+			int dayIndex = i / NX;
 			int dayOffset = 1000*60*60*24 * dayIndex;
-			int hourIndex = (i+firstImageIdx) % NX;
+			int hourIndex = i % NX;
 			int hour = INIT_HOUR_UTC + hourIndex*HOUR_RES + tz.getRawOffset()/(1000*60*60);
 			calText.setTimeInMillis(initial + dayOffset);
 			String date = dateFormat.format(calText.getTime()) + " " + hour%24 + ":00-" + (hour+HOUR_RES)%24 + ":00";
 			vals.add(date);
+			
+			int newHourDiff = Math.abs(hour+24*dayIndex-hourNow);
+			if (newHourDiff < hourDiff) {
+				hourDiff = newHourDiff;
+				closestMap = i - firstImageIdx;
+			}
 		}
 		return vals;
 	}
@@ -165,7 +170,7 @@ public class ImsRainForecastFragment extends ImageFragment implements OnItemSele
 		return firstImageIdx;
 	}
 
-
+/*
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
 		int off = pos + firstImageIdx;
@@ -176,10 +181,21 @@ public class ImsRainForecastFragment extends ImageFragment implements OnItemSele
 				imgView.setImageBitmap(img);
 		}
 	}
-
+//*/
 	@Override
-	public void onNothingSelected(AdapterView<?> parent) {
-		
+	public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+		int max = seekBar.getMax();
+		if (imgView != null && dl[0].isFinished() && seekBar != null && max > 0) {
+			int off = progress + firstImageIdx;
+			if (dl[0].isFinished()) {
+				//imgView.setImageBitmap(dl[progress].getBitmap(errorBitmap));
+				Bitmap img = getImage(off%NX,off/NX);
+				if (img != null)
+					imgView.setImageBitmap(img);
+				textView.setText(labels.get(progress));
+			}
+		}
 	}
+
 	
 }

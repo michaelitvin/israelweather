@@ -12,7 +12,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical" >
-
+		
+		<com.litvin.israelweather.ZoomableImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:antialias="true"
+            android:background="@color/background"
+            android:scaleType="center" />
+        
         <TextView
             android:id="@+id/textView"
             android:layout_width="match_parent"
@@ -23,56 +32,47 @@
             android:textSize="25sp"
             android:visibility="gone" />
 
-        <com.litvin.israelweather.ZoomableImageView
-            android:id="@+id/imageView"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:antialias="true"
-            android:scaleType="center" />
-
-        <Spinner
-            android:id="@+id/spinImages"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone" />
-
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content" 
+            android:orientation="horizontal"
+            android:layoutDirection="ltr">
 
+            <ImageButton
+                android:id="@+id/btnPrev"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:drawable/ic_media_rew"
+                tools:ignore="HardcodedText"
+                android:contentDescription="-"
+                android:layout_gravity="center_vertical"
+                android:visibility="gone" />
+            
             <SeekBar
                 android:id="@+id/seekBar"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:max="1"
                 android:paddingBottom="@dimen/seekbar_padding"
-                android:paddingLeft="30dp"
-                android:paddingRight="30dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
                 android:paddingTop="@dimen/seekbar_padding"
-                android:layout_toRightOf="@+id/btnPrev"
-                android:layout_toLeftOf="@+id/btnNext"
                 android:progress="0"
+                android:layout_weight="1"
                 android:visibility="gone" />
 
             <ImageButton
                 android:id="@+id/btnNext"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
                 android:background="@android:drawable/ic_media_ff"
-                android:contentDescription="+"
+                tools:ignore="HardcodedText"
+                android:contentDescription="+" 
+                android:layout_gravity="center_vertical"
                 android:visibility="gone" />
 
-            <ImageButton
-                android:id="@+id/btnPrev"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:background="@android:drawable/ic_media_rew"
-                android:contentDescription="-"
-                android:visibility="gone" />
-        </RelativeLayout>
+            
+        </LinearLayout>
 
     </LinearLayout>
 
