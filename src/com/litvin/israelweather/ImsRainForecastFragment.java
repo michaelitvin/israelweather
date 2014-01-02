@@ -18,9 +18,9 @@ public class ImsRainForecastFragment extends ImageFragment {
 	private static final int NX = 4;
 	private static final int NY = 5;
 	private static final int IMG_WIDTH = 166+12;
-	private static final int IMG_HEIGHT = 370+24;//370+12;
+	private static final int IMG_HEIGHT = 370+12;//370+24;
 	private static final int IMG_X0 = 27-6;
-	private static final int IMG_Y0 = 218-18;//218-6;
+	private static final int IMG_Y0 = 218-6;//218-18;
 	private static final int IMG_X_OFFSET = 200;
 	private static final int IMG_Y_OFFSET = 400;
 	
