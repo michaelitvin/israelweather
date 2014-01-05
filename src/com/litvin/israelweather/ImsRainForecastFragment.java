@@ -17,10 +17,10 @@ public class ImsRainForecastFragment extends ImageFragment {
 
 	private static final int NX = 4;
 	private static final int NY = 5;
-	private static final int IMG_WIDTH = 166+12;
-	private static final int IMG_HEIGHT = 370+12;//370+24;
-	private static final int IMG_X0 = 27-6;
-	private static final int IMG_Y0 = 218-6;//218-18;
+	private static final int IMG_WIDTH = 166;
+	private static final int IMG_HEIGHT = 370;
+	private static final int IMG_X0 = 27;
+	private static final int IMG_Y0 = 218;
 	private static final int IMG_X_OFFSET = 200;
 	private static final int IMG_Y_OFFSET = 400;
 	
@@ -47,6 +47,7 @@ public class ImsRainForecastFragment extends ImageFragment {
 		View rootView = super.onCreateView(inflater, container, savedInstanceState);
 		
 		dateFormat = new SimpleDateFormat("dd/MM", getResources().getConfiguration().locale);
+		MainActivity.stopAnnouncingNew(getActivity(), getString(R.string.title_section_rain_forecast));
 		
 		return rootView;
 	}
@@ -97,6 +98,7 @@ public class ImsRainForecastFragment extends ImageFragment {
 				int y = IMG_Y0 + iy*IMG_Y_OFFSET;
 				imgs[linIdx] = Bitmap.createBitmap(img, x, y, IMG_WIDTH, IMG_HEIGHT);
 				//imgs[linIdx] = Bitmap.createBitmap(imgs[linIdx], 7, 19, 5, 5);
+				//imgs[linIdx] = Bitmap.createBitmap(imgs[linIdx], 0, 0, 5, 5);
 			} else {
 				imgs[linIdx] = errorBitmap;
 			}
@@ -106,15 +108,16 @@ public class ImsRainForecastFragment extends ImageFragment {
 
 	private boolean isValid(Bitmap img) {
 		/*//For testing, uncomment this and find a suitable pixel. You can also limit the image size in getImage().
-		Log.i("litvin", img.toString());
-		for (int x = 0; x < Math.min(50, img.getWidth()); x++) {
-			for (int y = 0; y < Math.min(50, img.getHeight()); y++) {
+		android.util.Log.i("litvin", img.toString());
+		for (int x = 0; x < Math.min(20, img.getWidth()); x++) {
+			for (int y = 0; y < Math.min(20, img.getHeight()); y++) {
 				int px = img.getPixel(x, y);
-				Log.i("litvin", "px(" + x + "," + y + ")=" + Integer.toHexString(px) + "=" + px);
+				android.util.Log.i("litvin", "px(" + x + "," + y + ")=" + Integer.toHexString(px) + "=" + px);
 			}
 		}
 		//*/
-		int px = img.getPixel(8, 20);
+		//int px = img.getPixel(8, 20);
+		int px = img.getPixel(2, 2);
 		boolean ret = (px!=0xffffffff);
 		//Log.i("litvin", "px=" + "=" + Integer.toHexString(px)+ px + ";" + ret);
 		return ret;
@@ -170,18 +173,6 @@ public class ImsRainForecastFragment extends ImageFragment {
 		return firstImageIdx;
 	}
 
-/*
-	@Override
-	public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-		int off = pos + firstImageIdx;
-		if (dl[0].isFinished()) {
-			//imgView.setImageBitmap(dl[progress].getBitmap(errorBitmap));
-			Bitmap img = getImage(off%NX,off/NX);
-			if (img != null)
-				imgView.setImageBitmap(img);
-		}
-	}
-//*/
 	@Override
 	public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 		int max = seekBar.getMax();

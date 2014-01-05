@@ -1,13 +1,17 @@
 package com.litvin.israelweather;
 
+import java.lang.reflect.Field;
 import java.util.Locale;
 
 import com.google.analytics.tracking.android.EasyTracker;
+import com.google.analytics.tracking.android.MapBuilder;
 
 import android.annotation.TargetApi;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.net.Uri;
 import android.os.Bundle;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -21,6 +25,7 @@ import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewConfiguration;
 import android.widget.ArrayAdapter;
 
 
@@ -33,6 +38,7 @@ public class MainActivity extends ActionBarActivity implements
 	 */
 	public static final String GENERAL_PREFS = "General preferences";
 	public static final String PREF_LANG = "Language index";
+	public static final String PREF_ANNOUNCE = "Announce_";
 	private static final Locale[] LOCALES = {new Locale("en"), new Locale("he"), new Locale("ru")};
 
 	private static final String STATE_SELECTED_NAVIGATION_ITEM = "selected_navigation_item";
@@ -59,6 +65,7 @@ public class MainActivity extends ActionBarActivity implements
 		final ActionBar actionBar = getSupportActionBar();
 		actionBar.setDisplayShowTitleEnabled(false);
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+		displayOverflowMenu();
 
 		// Set up the dropdown list navigation in the action bar.
 		actionBar.setListNavigationCallbacks(
@@ -68,7 +75,7 @@ public class MainActivity extends ActionBarActivity implements
 						android.R.id.text1, new String[] {
 								getString(R.string.title_section_ims_forecast_country),
 								getString(R.string.title_section_ims_forecast_cities),
-								getString(R.string.title_section_rain_forecast),
+								announceNew(getString(R.string.title_section_rain_forecast)),
 								getString(R.string.title_section_rain_radar),
 								getString(R.string.title_section_temperatures_map),
 								getString(R.string.title_section_tide_table), }), this);
@@ -196,6 +203,42 @@ public class MainActivity extends ActionBarActivity implements
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    // Handle item selection
 	    switch (item.getItemId()) {
+	        case R.id.action_share:
+	        	 // Create the share intent using Intent.ACTION_SEND, this is the action apps
+	            // like Facebook will be listening for
+	            Intent share_intent = new Intent(Intent.ACTION_SEND);
+	         
+	            // In this example I'm sharing some text and a URL to my Google Play page for
+	            // my app therefore the Type is text/plain.
+	            // Change .setType if your sending an image, video, etc.
+	            share_intent.setType("text/plain");
+	         
+	            // Add your message and URL that you'd like to share. In this case, I created 
+	            // a string resource called pitch which includes a short promotional message 
+	            // (with targeted #hashtags) which is included before the URL to my Google Play page.
+	            share_intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.pitch_subject));
+	            share_intent 
+	                .putExtra(
+	                    Intent.EXTRA_TEXT, getString(R.string.pitch_text) // Promotional string
+	                    + " \n"
+	                    + "https://play.google.com/store/apps/details?referrer=utm_source%3Dapp_share&id=" + getPackageName()); // URL
+	         
+	            // Starts the Activity launching the Intent's chooser method. The chooser method is the
+	            // menu users get upon selecting Share, this menu shows all apps available to share with.
+	            startActivity(Intent.createChooser(share_intent, getString(R.string.action_share))); // Creates the sharing menu titled "Share..."
+	            trackButtonPress("share_button");
+	        	return true;
+	        case R.id.action_rate:
+	        	Uri uri = Uri.parse("market://details?id=" + getPackageName());
+	        	Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
+	        	try {
+	        	  startActivity(goToMarket);
+	        	} catch (ActivityNotFoundException e) {
+	        	  startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + getPackageName())));
+	        	}
+	        	
+	        	trackButtonPress("rate_button");
+	        	return true;
 	        case R.id.action_language:
 	    		// We need an Editor object to make preference changes.
 	    		// All objects are from android.context.Context
@@ -211,6 +254,7 @@ public class MainActivity extends ActionBarActivity implements
 	    		Intent refresh = new Intent(this, MainActivity.class); 
 	    		finish();
 	    		startActivity(refresh);
+	    		trackButtonPress("language_button");
 	    		return true;
 	        default:
 	            return super.onOptionsItemSelected(item);
@@ -242,5 +286,44 @@ public class MainActivity extends ActionBarActivity implements
 		super.onStop();
 	}
 	
+	protected String announceNew(String str) {
+		SharedPreferences settings = getSharedPreferences(GENERAL_PREFS, 0);
+	    int count = settings.getInt(PREF_ANNOUNCE + str, 0);
+	    if (count >= 0)
+	    	return "** " + str + " **";
+	    return str;
+	}
+	
+	public static void stopAnnouncingNew(Context context, String str) {
+		// We need an Editor object to make preference changes.
+		// All objects are from android.context.Context
+		SharedPreferences settings = context.getSharedPreferences(GENERAL_PREFS, 0);
+		SharedPreferences.Editor editor = settings.edit();
+		editor.putInt(PREF_ANNOUNCE + str, -1);
+		// Commit the edits!
+		editor.commit();
+	}
+	
+	private void displayOverflowMenu() {
+	     try {
+	        ViewConfiguration config = ViewConfiguration.get(this);
+	        Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
+	        if(menuKeyField != null) {
+	            menuKeyField.setAccessible(true);
+	            menuKeyField.setBoolean(config, false);
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	}
+	
+	private void trackButtonPress(String name) {
+        EasyTracker.getInstance(this).send(MapBuilder
+      	      .createEvent(	"ui_action",      // Event category (required)
+                        	"button_press",   // Event action (required)
+                        	name, 			  // Event label
+                        	null)             // Event value
+                        			 .build() );
+	}
 	
 }

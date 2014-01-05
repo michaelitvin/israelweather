@@ -8,10 +8,24 @@
         android:title="@string/action_settings"/ -->
 
     <item
-        android:id="@+id/action_language"
+        android:id="@+id/action_share"
         android:orderInCategory="100"
-        israelweather:showAsAction="ifRoom"
+        israelweather:showAsAction="never"
+        android:icon="@android:drawable/ic_menu_share"
+        android:title="@string/action_share"
+        />
+    
+    <item
+        android:id="@+id/action_rate"
+        android:orderInCategory="200"
+        israelweather:showAsAction="never"
+        android:title="@string/action_rate"
+        />
+    
+    <item
+        android:id="@+id/action_language"
+        android:orderInCategory="300"
+        israelweather:showAsAction="never"
         android:title="@string/action_language"
         />
-
 </menu>
