@@ -73,27 +73,27 @@
 
             
         </LinearLayout>
+        
+        <ProgressBar
+	        android:id="@+id/progressBar"
+	        style="?android:attr/progressBarStyleHorizontal"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layoutDirection="ltr"
+	        android:max="1"
+	        android:paddingBottom="@dimen/seekbar_padding"
+	        android:paddingTop="@dimen/seekbar_padding"
+	        android:progress="0" />
 
     </LinearLayout>
 
     <ProgressBar
-        android:id="@+id/progressCircle"
+        android:id="@+id/progressCircle1"
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true" />
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:max="1"
-        android:paddingBottom="@dimen/seekbar_padding"
-        android:paddingTop="@dimen/seekbar_padding"
-        android:progress="0" />
 
 </RelativeLayout>

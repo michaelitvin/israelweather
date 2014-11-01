@@ -48,7 +48,7 @@ public abstract class ImsForecastFragment extends Fragment implements DownloadTa
 		urlToday = getArguments().getString(ARG_URL_FORECAST_TODAY);
 		urlNextDays = getArguments().getString(ARG_URL_FORECAST_FEW_DAYS);
 
-		progressCircle = (ProgressBar) rootView.findViewById(R.id.progressCircle);
+		progressCircle = (ProgressBar) rootView.findViewById(R.id.progressCircle2);
 		progressCircle.setVisibility(View.VISIBLE);
 		
 		webView = (WebView) rootView.findViewById(R.id.webView);
@@ -116,5 +116,5 @@ public abstract class ImsForecastFragment extends Fragment implements DownloadTa
 		}
 		super.onStart();
 	}
-	
+
 }

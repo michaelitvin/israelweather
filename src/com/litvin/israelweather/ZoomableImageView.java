@@ -19,8 +19,8 @@ import android.view.GestureDetector.SimpleOnGestureListener;
 
 public class ZoomableImageView extends View {
     private static final String TAG = "ZoomableImageView";
-    private final float INIT_SCALE_COEFF = 1.2f;
-    private final int MAX_INIT_SCALE = 2;
+    private final float INIT_SCALE_COEFF = 1.1f;
+    private final int MAX_INIT_SCALE = 3;
    
     private Bitmap imgBitmap = null;
    
@@ -69,7 +69,7 @@ public class ZoomableImageView extends View {
     private Handler mHandler = new Handler();       
    
     float minScale = 0.5f;
-    float maxScale = 4.0f;
+    float maxScale = 6.0f;
    
     float wpRadius = 25.0f;
     float wpInnerRadius = 20.0f;
@@ -159,7 +159,7 @@ public class ZoomableImageView extends View {
                 //minScale = scale;
             }
             else if(defaultScale == ZoomableImageView.DEFAULT_SCALE_FIT_INTEGER) {               
-                if(imgWidth > containerWidth) {           
+                if(imgWidth/(float)containerWidth < imgHeight/(float)containerHeight) {
                     scale = Math.min(MAX_INIT_SCALE, Math.max(minScale, Math.round(INIT_SCALE_COEFF * (float)containerWidth / imgWidth)));           
                     float newHeight = imgHeight * scale;           
                     initY = (containerHeight - (int)newHeight)/2;
@@ -441,7 +441,7 @@ public class ZoomableImageView extends View {
                 //minScale = scale;
             }
             else if(defaultScale == ZoomableImageView.DEFAULT_SCALE_FIT_INTEGER) {               
-                if(imgWidth > containerWidth) {           
+                if (imgWidth/(float)containerWidth < imgHeight/(float)containerHeight) {           
                     scale = Math.min(MAX_INIT_SCALE, Math.max(minScale, Math.round(INIT_SCALE_COEFF * (float)containerWidth / imgWidth)));
                     float newHeight = imgHeight * scale;           
                     initY = (containerHeight - (int)newHeight)/2;

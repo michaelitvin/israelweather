@@ -3,6 +3,7 @@
 
     <string name="app_name">מזג אוויר בארץ</string>
     <string name="action_settings">הגדרות</string>
+    <string name="action_refresh">רענן</string>
     <string name="action_share">שתף עם חברים!</string>
     <string name="action_rate">דרג את האפליקציה</string>
     <string name="action_language">שנה שפה</string>

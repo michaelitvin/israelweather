@@ -3,6 +3,7 @@
 
     <string name="app_name">Погода в Израиле</string>
     <string name="action_settings">Настройки</string>
+    <string name="action_refresh">Обновить</string>
     <string name="action_share">Поделиться с друзями!</string>
     <string name="action_rate">Оценить приложение</string>
     <string name="action_language">Изменить язык</string>

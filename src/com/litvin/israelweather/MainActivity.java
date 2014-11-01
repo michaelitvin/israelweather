@@ -39,6 +39,7 @@ public class MainActivity extends ActionBarActivity implements
 	public static final String GENERAL_PREFS = "General preferences";
 	public static final String PREF_LANG = "Language index";
 	public static final String PREF_ANNOUNCE = "Announce_";
+	public static final String PREF_LAST_NAVIGATION_ITEM = "Navigation item";
 	private static final Locale[] LOCALES = {new Locale("en"), new Locale("he"), new Locale("ru")};
 
 	private static final String STATE_SELECTED_NAVIGATION_ITEM = "selected_navigation_item";
@@ -49,7 +50,6 @@ public class MainActivity extends ActionBarActivity implements
 	private Fragment fragmentArray[];
 	
 	private Bitmap errorBitmap;
-	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -102,7 +102,7 @@ public class MainActivity extends ActionBarActivity implements
 		rainRadarFragmant.setArguments(rainRadarFragmantArgs);
 		tideTableFragment.setArguments(tideTableFragmentArgs);
 		*/
-
+		
 		String fragmentTag;
 		
 		fragmentTag = FRAGMENT_TAGS[0];
@@ -138,6 +138,15 @@ public class MainActivity extends ActionBarActivity implements
 		*/
 		
 		fragmentArray = new Fragment[] {imsForecastCountryFragment, imsForecastCitiesFragment, rainForecastFragmant, rainRadarFragmant, tempMapFragment/*, tideTableFragment*/};
+		
+		int lastItem = settings.getInt(PREF_LAST_NAVIGATION_ITEM, -1);
+		if (savedInstanceState != null && savedInstanceState.containsKey(STATE_SELECTED_NAVIGATION_ITEM))
+			lastItem = savedInstanceState.getInt(STATE_SELECTED_NAVIGATION_ITEM);
+		if (lastItem >= 0)
+			getSupportActionBar().setSelectedNavigationItem(lastItem);
+		SharedPreferences.Editor editor = settings.edit();
+		editor.remove(PREF_LAST_NAVIGATION_ITEM);
+		editor.commit();
 	}
 
 	
@@ -159,9 +168,9 @@ public class MainActivity extends ActionBarActivity implements
 	public void onRestoreInstanceState(Bundle savedInstanceState) {
 		// Restore the previously serialized current dropdown position.
 		super.onRestoreInstanceState(savedInstanceState);
-		if (savedInstanceState.containsKey(STATE_SELECTED_NAVIGATION_ITEM)) {
-			getSupportActionBar().setSelectedNavigationItem(
-					savedInstanceState.getInt(STATE_SELECTED_NAVIGATION_ITEM));
+		if (savedInstanceState != null && savedInstanceState.containsKey(STATE_SELECTED_NAVIGATION_ITEM)) {
+			int lastItem = savedInstanceState.getInt(STATE_SELECTED_NAVIGATION_ITEM);
+			getSupportActionBar().setSelectedNavigationItem(lastItem);
 		}
 	}
 
@@ -203,10 +212,24 @@ public class MainActivity extends ActionBarActivity implements
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		Intent refresh;
+		SharedPreferences settings = getSharedPreferences(GENERAL_PREFS, 0);
+		SharedPreferences.Editor editor;
+		
 	    // Handle item selection
 	    switch (item.getItemId()) {
-	        case R.id.action_share:
-	        	 // Create the share intent using Intent.ACTION_SEND, this is the action apps
+        case R.id.action_refresh:
+        	editor = settings.edit();
+    		editor.putInt(PREF_LAST_NAVIGATION_ITEM, getSupportActionBar().getSelectedNavigationIndex());
+    		editor.commit();
+    		
+        	trackButtonPress("refresh_button");
+    		refresh = new Intent(this, MainActivity.class); 
+    		finish();
+    		startActivity(refresh);
+        	return true;
+        case R.id.action_share:
+	        	// Create the share intent using Intent.ACTION_SEND, this is the action apps
 	            // like Facebook will be listening for
 	            Intent share_intent = new Intent(Intent.ACTION_SEND);
 	         
@@ -244,19 +267,19 @@ public class MainActivity extends ActionBarActivity implements
 	        case R.id.action_language:
 	    		// We need an Editor object to make preference changes.
 	    		// All objects are from android.context.Context
-	    		SharedPreferences settings = getSharedPreferences(GENERAL_PREFS, 0);
 	    		int oldLang = settings.getInt(PREF_LANG, getDefaultLanguage());
 	    		int newLang = (oldLang+1)%LOCALES.length;
-	    		SharedPreferences.Editor editor = settings.edit();
+	    		editor = settings.edit();
 	    		editor.putInt(PREF_LANG, newLang);
+	    		editor.putInt(PREF_LAST_NAVIGATION_ITEM, getSupportActionBar().getSelectedNavigationIndex());
 	    		// Commit the edits!
 	    		editor.commit();
 
 	    		setLocale(newLang);
-	    		Intent refresh = new Intent(this, MainActivity.class); 
+	    		trackButtonPress("language_button");
+	    		refresh = new Intent(this, MainActivity.class); 
 	    		finish();
 	    		startActivity(refresh);
-	    		trackButtonPress("language_button");
 	    		return true;
 	        default:
 	            return super.onOptionsItemSelected(item);

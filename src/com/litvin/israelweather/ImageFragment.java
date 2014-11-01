@@ -93,7 +93,7 @@ public class ImageFragment extends Fragment implements OnTouchListener, OnSeekBa
 		
 		textView = (TextView) rootView.findViewById(R.id.textView);
 
-		progressCircle = (ProgressBar) rootView.findViewById(R.id.progressCircle);
+		progressCircle = (ProgressBar) rootView.findViewById(R.id.progressCircle1);
 		progressCircle.setVisibility(View.VISIBLE);
 
 		return rootView;
