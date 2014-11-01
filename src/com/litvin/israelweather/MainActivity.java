@@ -75,7 +75,8 @@ public class MainActivity extends ActionBarActivity implements
 						android.R.id.text1, new String[] {
 								getString(R.string.title_section_ims_forecast_country),
 								getString(R.string.title_section_ims_forecast_cities),
-								announceNew(getString(R.string.title_section_rain_forecast)),
+								/*announceNew(getString(R.string.title_section_rain_forecast)),*/
+								getString(R.string.title_section_rain_forecast),
 								getString(R.string.title_section_rain_radar),
 								getString(R.string.title_section_temperatures_map),
 								/*getString(R.string.title_section_tide_table),*/ }), this);
