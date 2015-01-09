@@ -59,7 +59,7 @@ public abstract class ImsForecastFragment extends Fragment implements DownloadTa
 	
 	abstract void downloadContent(Bundle savedInstanceState);
 	
-	void generateSuccessHtml() {
+	protected void generateSuccessHtml() {
 		try {
 			String forecastHtmlFmt = getActivity().getResources().getString(R.string.forecast_html);
 			String head = getActivity().getResources().getString(R.string.html_head);
@@ -70,18 +70,21 @@ public abstract class ImsForecastFragment extends Fragment implements DownloadTa
 		}
 	}
 	
-	void generateFailureHtml() {
+	protected void generateFailureHtml() {
 		try {
 			String head = getActivity().getResources().getString(R.string.html_head);
 			String errHtmlFmt = getActivity().getResources().getString(R.string.ims_forecast_error);
 			html = String.format(errHtmlFmt, head);
 			display();
+			
+			EasyTracker tracker = EasyTracker.getInstance(getActivity());
+			tracker.send(MapBuilder.createEvent("data_display", "failure", "html", null).build());
 		} catch (NullPointerException ex) {
 			Log.w("litvin", ex.toString());
 		}
 	}
 	
-	void display() {
+	protected void display() {
 		//webView.loadUrl("about:blank");
 		webView.loadDataWithBaseURL("http://www.ims.gov.il/", html, "text/html", null, null);
 	}

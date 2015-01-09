@@ -23,7 +23,7 @@
     <string name="ims_rain_radar_url" formatted="false">http://www.ims.gov.il/Ims/Pages/RadarImage.aspx?Row=%d&amp;TotalImages=%d&amp;LangID=1&amp;Location=</string>
     <string name="isramar_tide_table_url">http://isramar.ocean.org.il/isramar2009/TideHadera/webForm2.aspx</string>
     
-    <string name="ims_forecast_error"><![CDATA[<html>%s<body style=\"direction:rtl;\">אופס... אני לא מצליחה לטעון את המידע מאתר השירות המטאורולוגי :(<br/><br/>(האם האינטרנט מחובר?)</body></html>]]></string>
+    <string name="ims_forecast_error"><![CDATA[<html>%s<body style=\"direction:rtl;\">אופס... אני לא מצליחה לטעון את המידע מאתר השירות המטאורולוגי :(<br/><br/>(האם האינטרנט מחובר? בדקו <a href="http://ims.gov.il/">כאן</a>.)</body></html>]]></string>
     
     <string-array name="city_names">
 		<item>אילת</item>

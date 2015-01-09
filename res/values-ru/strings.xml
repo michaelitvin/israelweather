@@ -14,7 +14,7 @@
     <string name="title_section_temperatures_map">Карта температур</string>
     <string name="title_section_tide_table">Прилив и отлив</string>
 	
-    <string name="ims_forecast_error"><![CDATA[<html>%s<body>Упсс... Не получается загрузить информацию с метеорологического сайта :(<br/><br/>(Может быть интернет отключен?)</body></html>]]></string>
+    <string name="ims_forecast_error"><![CDATA[<html>%s<body>Упсс... Не получается загрузить информацию с метеорологического сайта :(<br/><br/>(Может быть интернет отключен? Проверь <a href="http://ims.gov.il/">здесь</a>.)</body></html>]]></string>
     
     <string-array name="city_names">
         <item>Афула</item>

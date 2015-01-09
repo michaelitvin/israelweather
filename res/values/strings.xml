@@ -27,7 +27,7 @@
     <string name="ims_rain_radar_url" formatted="false">http://www.ims.gov.il/Ims/Pages/RadarImage.aspx?Row=%d&amp;TotalImages=%d&amp;LangID=0&amp;Location=</string>
     <string name="isramar_tide_table_url">http://isramar.ocean.org.il/isramar2009/TideHadera/webForm2.aspx?c=en-us</string>
 
-    <string name="ims_forecast_error"><![CDATA[<html>%s<body>Oops... Could not load data from IMS, the meteorological service site :(<br/><br/>(Are you connected to the internet?)</body></html>]]></string>
+    <string name="ims_forecast_error"><![CDATA[<html>%s<body>Oops... Could not load data from IMS, the meteorological service site :(<br/><br/>(Are you connected to the internet? Check <a href="http://ims.gov.il/">here</a>.)</body></html>]]></string>
     
     <string-array name="city_names">
         <item>Afula</item>

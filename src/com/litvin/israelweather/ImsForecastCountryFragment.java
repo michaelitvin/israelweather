@@ -28,7 +28,7 @@ public class ImsForecastCountryFragment extends ImsForecastFragment {
 	
 	
 	@Override
-	void generateSuccessHtml() {
+	protected void generateSuccessHtml() {
 		try {		
 			String today, nextDays;
 			today = getTextBetween(dlToday.getHtml(), "<div id=\"_ctl0_PageBody_HPforecast1_divDailyForecastIsr\"", "</div>");

@@ -30,4 +30,16 @@
 		<nature>com.android.ide.eclipse.adt.AndroidNature</nature>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>basic-http-client</name>
+			<type>2</type>
+			<location>D:/Programming/Android/basic-http-client/http-client-java/src/main/java</location>
+		</link>
+		<link>
+			<name>http-client-android</name>
+			<type>2</type>
+			<location>D:/Programming/Android/basic-http-client/http-client-android/src/main/java</location>
+		</link>
+	</linkedResources>
 </projectDescription>

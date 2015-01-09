@@ -1,16 +1,15 @@
 package com.litvin.israelweather;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
+import java.net.URISyntaxException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.nio.ByteBuffer;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
+import com.turbomanage.httpclient.AbstractHttpClient;
+import com.turbomanage.httpclient.BasicHttpClient;
+import com.turbomanage.httpclient.HttpResponse;
 
 import android.annotation.TargetApi;
 import android.os.AsyncTask;
@@ -119,62 +118,27 @@ public abstract class DownloadTask<Result> extends AsyncTask<String, Void, Resul
         return res;
     }
     
-    static protected CookieManager cookieManager = new CookieManager();
-    
-    private static ByteBuffer getAsByteArray(String urldisplay, int timeout) throws IOException {
-    	URL url = new URL(urldisplay);
-        URLConnection connection = url.openConnection();
-        cookieManager.setCookies(connection);
-        // Set the timeout
-        connection.setReadTimeout(timeout);
-        connection.setDoOutput(false);
-        connection.connect();
-        cookieManager.storeCookies(connection);
-        
-        
-        // Since you get a URLConnection, use it to get the InputStream
-        InputStream in = new BufferedInputStream(connection.getInputStream(),16384);
-        // Now that the InputStream is open, get the content length
-        
-        int contentLength = connection.getContentLength();
-        
-        // To avoid having to resize the array over and over and over as
-        // bytes are written to the array, provide an accurate estimate of
-        // the ultimate size of the byte array
-        ByteArrayOutputStream tmpOut;
-        if (contentLength != -1) {
-            tmpOut = new ByteArrayOutputStream(contentLength);
-        } else {
-            tmpOut = new ByteArrayOutputStream(131072); // Pick some appropriate size
-        }
-
-        byte[] buf = new byte[16384];
-        while (true) {
-            int len = in.read(buf);
-            if (len == -1) {
-                break;
-            }
-            tmpOut.write(buf, 0, len);
-        }
-        byte[] array = tmpOut.toByteArray();
-        
-        in.close();
-        tmpOut.close(); // No effect, but good to do anyway to keep the metaphor alive
-
-        if (array.length < 1024) { //Check if it's a cookie request
-        	String content = new String(array);
-        	Pattern pattern = Pattern.compile("document\\s*\\.\\s*cookie\\s*=\\s*'([^']+)'");
-        	Matcher matcher = pattern.matcher(content);
-        	while (matcher.find()) {
-        		String cookie;
-        		if (matcher.groupCount() == 1) {
-        			cookie = matcher.group(1);
-        			cookieManager.storeCookie(connection, cookie);
-        		}
-        	}
-        }
-
-        return ByteBuffer.wrap(array);
+	@TargetApi(Build.VERSION_CODES.GINGERBREAD)
+	private static ByteBuffer getAsByteArray(String urldisplay, int timeout) throws IOException {
+    	AbstractHttpClient.ensureCookieManager();
+    	BasicHttpClient httpClient = new BasicHttpClient(urldisplay);
+    	httpClient.setConnectionTimeout(timeout);
+    	if (DownloadHTMLTask.cookieHeader != null) {
+    		httpClient.addHeader("Cookie", DownloadHTMLTask.cookieHeader);
+    	}
+    	HttpResponse httpResponse = httpClient.get(null, null);
+    	
+    	if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.GINGERBREAD) {
+	    	try {
+    			AbstractHttpClient.getCookieManager().put(new java.net.URI(urldisplay), httpResponse.getHeaders());
+			} catch (URISyntaxException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    	}
+    	
+    	ByteBuffer ret = ByteBuffer.wrap(httpResponse.getBody());
+    	return ret;
     }
     
 	protected void onPostExecute(Result res) {

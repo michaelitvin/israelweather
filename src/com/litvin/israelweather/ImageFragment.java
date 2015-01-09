@@ -148,6 +148,9 @@ public class ImageFragment extends Fragment implements OnTouchListener, OnSeekBa
 				
 				downloadComplete(dl[i].getBitmap(errorBitmap), true, i);
 				
+				EasyTracker tracker = EasyTracker.getInstance(getActivity());
+				tracker.send(MapBuilder.createEvent("data_display", "failure", "image", null).build());
+				
 			}
 		}
 	}
