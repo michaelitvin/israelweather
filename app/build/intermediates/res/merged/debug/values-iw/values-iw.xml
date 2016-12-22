@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer-array name="city_codes">
+		<item>520</item>
+		<item>114</item>
+		<item>513</item>
+		<item>203</item>
+		<item>115</item>
+		<item>202</item>
+		<item>510</item>
+		<item>204</item>
+		<item>106</item>
+		<item>207</item>
+		<item>105</item>
+		<item>209</item>
+		<item>507</item>
+		<item>201</item>
+		<item>402</item>
+	</integer-array>
+    <string-array name="city_names">
+		<item>אילת</item>
+		<item>אשדוד</item>
+		<item>באר שבע</item>
+		<item>בית שאן</item>
+		<item>חיפה</item>
+		<item>טבריה</item>
+		<item>ירושלים</item>
+		<item>לוד</item>
+		<item>מצפה רמון</item>
+		<item>נצרת</item>
+		<item>עין גדי</item>
+		<item>עפולה</item>
+		<item>צפת</item>
+		<item>קצרין</item>
+		<item>תל אביב - יפו</item>
+    </string-array>
+    <bool name="is_rtl">true</bool>
+    <bool name="isnt_rtl">false</bool>
+    <string msgid="4600421777120114993" name="abc_action_bar_home_description">"נווט לדף הבית"</string>
+    <string msgid="1594238315039666878" name="abc_action_bar_up_description">"נווט למעלה"</string>
+    <string msgid="3588849162933574182" name="abc_action_menu_overflow_description">"עוד אפשרויות"</string>
+    <string msgid="4076576682505996667" name="abc_action_mode_done">"בוצע"</string>
+    <string msgid="7468859129482906941" name="abc_activity_chooser_view_see_all">"ראה הכול"</string>
+    <string msgid="2031811694353399454" name="abc_activitychooserview_choose_application">"בחר אפליקציה"</string>
+    <string msgid="3691816814315814921" name="abc_searchview_description_clear">"מחק שאילתה"</string>
+    <string msgid="2550479030709304392" name="abc_searchview_description_query">"שאילתת חיפוש"</string>
+    <string msgid="8264924765203268293" name="abc_searchview_description_search">"חפש"</string>
+    <string msgid="8928215447528550784" name="abc_searchview_description_submit">"שלח שאילתה"</string>
+    <string msgid="893419373245838918" name="abc_searchview_description_voice">"חיפוש קולי"</string>
+    <string msgid="3421042268587513524" name="abc_shareactionprovider_share_with">"שתף עם"</string>
+    <string msgid="7165123711973476752" name="abc_shareactionprovider_share_with_application">"‏שתף עם %s"</string>
+    <string name="action_language">שנה שפה</string>
+    <string name="action_rate">דרג את האפליקציה</string>
+    <string name="action_refresh">רענן</string>
+    <string name="action_settings">הגדרות</string>
+    <string name="action_share">שתף עם חברים!</string>
+    <string name="app_name">מזג אוויר בארץ</string>
+    <string formatted="false" name="forecast_html">&lt;html>%s&lt;body>&lt;div align=\"center\" style=\"direction:rtl;\">%s&lt;/div>&lt;br/>&lt;div align=\"center\" style=\"direction:rtl;\">%s&lt;/div>&lt;/body>&lt;/html></string>
+    <string name="ims_forecast_error">&lt;html>%s&lt;body style=\"direction:rtl;\">אופס... אני לא מצליחה לטעון את המידע מאתר השירות המטאורולוגי :(&lt;br/>&lt;br/>(האם האינטרנט מחובר? בדקו &lt;a href="http://ims.gov.il/">כאן&lt;/a>.)&lt;/body>&lt;/html></string>
+    <string formatted="false" name="ims_forecast_home_url">http://www.ims.gov.il/ims/all_tahazit/</string>
+    <string formatted="false" name="ims_forecast_next_days_url">http://www.ims.gov.il/IMS/Pages/IsrCitiesForeCast.aspx?LangId=1&amp;LocationId=%d&amp;align=right&amp;DayAndDate=%%D7%%99%%D7%%95%%D7%%9D%%20%%D7%%95%%D7%%AA%%D7%%90%%D7%%A8%%D7%%99%%D7%%9A&amp;WeatherAndTemprature=%%D7%%9E%%D7%%96%%22%%D7%%90%%20%%D7%%95%%D7%%98%%D7%%9E%%D7%%A4%%D7%%A8%%D7%%98%%D7%%95%%D7%%A8%%D7%%94&amp;CF=C</string>
+    <string formatted="false" name="ims_forecast_today_url">http://www.ims.gov.il/IMS/Pages/IsrCitiesTodayForeCast.aspx?LangId=1&amp;LocationId=%d&amp;LocationName=%s&amp;MaxTempDuringDay=%%D7%%98%%D7%%9E%%D7%%A4%%2E%%20%%D7%%94%%D7%%9E%%D7%%A7%%D7%%A1%%D7%%99%%D7%%9E%%D7%%95%%D7%%9D%%20%%D7%%91%%D7%%99%%D7%%95%%D7%%9D&amp;MinTempNight=%%D7%%98%%D7%%9E%%D7%%A4%%2E%%20%%D7%%94%%D7%%9E%%D7%%99%%D7%%A0%%D7%%99%%D7%%9E%%D7%%95%%D7%%9D%%20%%D7%%91%%D7%%9C%%D7%%99%%D7%%9C%%D7%%94&amp;RelHumidityNoon=%%D7%%9C%%D7%%97%%D7%%95%%D7%%AA%%20%%D7%%99%%D7%%97%%D7%%A1%%D7%%99%%D7%%AA%%20%%D7%%91%%D7%%A6%%D7%%94%%D7%%A8%%D7%%99%%D7%%99%%D7%%9D&amp;FreqWindSpeed=%%D7%%9E%%D7%%94%%D7%%99%%D7%%A8%%D7%%95%%D7%%AA%%20%%D7%%94%%D7%%A8%%D7%%95%%D7%%97%%20%%D7%%94%%D7%%A9%%D7%%9B%%D7%%99%%D7%%97%%D7%%94&amp;MaxWindSpeed=%%D7%%9E%%D7%%94%%D7%%99%%D7%%A8%%D7%%95%%D7%%AA%%20%%D7%%94%%D7%%A8%%D7%%95%%D7%%97%%20%%D7%%94%%D7%%9E%%D7%%99%%D7%%A8%%D7%%91%%D7%%99%%D7%%AA&amp;To=to&amp;WindDirection=%%D7%%9B%%D7%%99%%D7%%95%%D7%%95%%D7%%9F%%20%%D7%%94%%D7%%A8%%D7%%95%%D7%%97&amp;CF=C</string>
+    <string formatted="false" name="ims_rain_radar_url">http://www.ims.gov.il/Ims/Pages/RadarImage.aspx?Row=%d&amp;TotalImages=%d&amp;LangID=1&amp;Location=</string>
+    <string formatted="false" name="ims_temperatures_map_url">http://www.ims.gov.il/Ims/Map/MapRender.aspx?type=weather&amp;LangId=1&amp;Optional=c&amp;Tab=Temperature</string>
+    <string name="isramar_tide_table_url">http://isramar.ocean.org.il/isramar2009/TideHadera/webForm2.aspx</string>
+    <string name="title_section_ims_forecast_cities">תחזית ערים</string>
+    <string name="title_section_ims_forecast_country">תחזית כל הארץ</string>
+    <string name="title_section_rain_forecast">תחזית גשם</string>
+    <string name="title_section_rain_radar">מכ"ם גשם</string>
+    <string name="title_section_temperatures_map">מפת טמפרטורות</string>
+    <string name="title_section_tide_table">גאות ושפל</string>
+</resources>

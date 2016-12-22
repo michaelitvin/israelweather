@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pitch_subject">אפליקציית מזג אוויר לאנדרואיד</string>
+    <string name="pitch_text">מצאתי אפליקציה מדליקה שמציגה נתוני מזג אוויר בארץ, ממליץ לך לבדוק גם!</string>
+    
+    <string name="app_name">IsraelWeather</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_refresh">Refresh</string>
+    <string name="action_share">Share with friends!</string>
+    <string name="action_rate">Rate app</string>
+    <string name="action_language">Change language</string>
+    <string name="title_section_ims_forecast_country">Country Forecast</string>
+    <string name="title_section_ims_forecast_cities">Cities Forecast</string>
+    <string name="title_section_rain_forecast">Rain Forecast</string>
+    <string name="title_section_rain_radar">Rain Radar</string>
+    <string name="title_section_temperatures_map">Temperatures Map</string>
+    <string name="title_section_tide_table">Tide Table</string>
+    
+    <string name="ims_forecast_home_url" formatted="false">http://www.ims.gov.il/IMSENG/All_Tahazit/homepage.htm</string>
+    <string name="ims_forecast_today_url" formatted="false">http://www.ims.gov.il/IMS/Pages/IsrCitiesTodayForeCast.aspx?LangId=2&amp;LocationId=%d&amp;LocationName=%s&amp;MaxTempDuringDay=Max.%%20temp.%%20(day)&amp;MinTempNight=Min.%%20temp.%%20(night)&amp;RelHumidityNoon=Relative%%20humidity%%20(noon)&amp;FreqWindSpeed=Frequent%%20wind%%20speed&amp;MaxWindSpeed=Max.%%20wind%%20speed&amp;To=to&amp;WindDirection=Wind%%20direction&amp;CF=C</string>
+    <string name="ims_forecast_next_days_url" formatted="false">http://www.ims.gov.il/IMS/Pages/IsrCitiesForeCast.aspx?LangId=2&amp;LocationId=%d&amp;align=left&amp;DayAndDate=Day&amp;WeatherAndTemprature=Temperature&amp;CF=C</string>
+    <string name="forecast_html" formatted="false"><![CDATA[<html>%s<body\"><div align=\"center\" style=\"direction:ltr;\">%s</div><br/><div align=\"center\" style=\"direction:ltr;\">%s</div></body></html>]]></string>
+    
+    <string name="ims_temperatures_map_url">http://www.ims.gov.il/Ims/Map/MapRender.aspx?type=weather&amp;LangId=2&amp;Optional=c&amp;Tab=Temperature</string>
+    <string name="ims_rain_forecast_url" formatted="false">http://www.ims.gov.il/ims/publicpdf/ec_rain_forecast.png</string>
+    <string name="ims_rain_radar_url" formatted="false">http://www.ims.gov.il/Ims/Pages/RadarImage.aspx?Row=%d&amp;TotalImages=%d&amp;LangID=0&amp;Location=</string>
+    <string name="isramar_tide_table_url">http://isramar.ocean.org.il/isramar2009/TideHadera/webForm2.aspx?c=en-us</string>
+
+    <string name="ims_forecast_error"><![CDATA[<html>%s<body>Oops... Could not load data from IMS, the meteorological service site :(<br/><br/>(Are you connected to the internet? Check <a href="http://ims.gov.il/">here</a>.)</body></html>]]></string>
+    
+    <string-array name="city_names">
+        <item>Afula</item>
+		<item>Ashdod</item>
+		<item>Beer Sheva</item>
+		<item>Bet Shean</item>
+		<item>Elat</item>
+		<item>En Gedi</item>
+		<item>Haifa</item>
+		<item>Jerusalem</item>
+		<item>Lod</item>
+		<item>Mizpe Ramon</item>
+		<item>Nazareth</item>
+		<item>Qazrin</item>
+		<item>Tel Aviv - Yafo</item>
+		<item>Tiberias</item>
+		<item>Zefat</item>
+    </string-array>
+    
+    <string name="ims_logo_alt">IMS Ⓒ</string>
+    
+</resources>

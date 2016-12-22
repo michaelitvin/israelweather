@@ -1,0 +1,88 @@
+ECLIPSE ANDROID PROJECT IMPORT SUMMARY
+======================================
+
+Ignored Files:
+--------------
+The following files were *not* copied into the new Gradle project; you
+should evaluate whether these are still needed in your project and if
+so manually move them:
+
+* .DS_Store
+* .gitignore
+* LICENSE
+* README.md
+* graphics/
+* graphics/IsraelWeather.png
+* graphics/IsraelWeather.xcf
+* graphics/IsraelWeather.zip
+* graphics/IsraelWeather1024.zip
+* graphics/IsraelWeather_feature.xcf
+* ic_launcher-web.png
+* playstore/
+* playstore/IsraelWeather.apk
+* playstore/IsraelWeather1024.png
+* playstore/IsraelWeather512.png
+* playstore/IsraelWeatherText.zip
+* playstore/IsraelWeather_feature.png
+* playstore/keystore
+* playstore/screenshots/
+* playstore/screenshots/Screenshot_2013-10-31-21-02-37.png
+* playstore/screenshots/Screenshot_2013-10-31-21-03-08.png
+* playstore/screenshots/Screenshot_2013-10-31-21-03-17.png
+* playstore/screenshots/Screenshot_2013-10-31-21-03-29.png
+* playstore/screenshots/Screenshot_2013-10-31-21-03-34.png
+* playstore/screenshots/Screenshot_2013-10-31-21-05-30.png
+* playstore/screenshots/Screenshot_2013-10-31-21-05-34.png
+* playstore/screenshots/Screenshot_2013-10-31-21-05-39.png
+* playstore/screenshots/Screenshot_2013-12-06-21-50-29.png
+* playstore/screenshots/Screenshot_2013-12-06-21-50-29.png_com.dropbox.attributes
+* proguard/
+* proguard/dump.txt
+* proguard/mapping.txt
+* proguard/seeds.txt
+* proguard/usage.txt
+* src01.zip
+* src02.zip
+
+Moved Files:
+------------
+Android Gradle projects use a different directory structure than ADT
+Eclipse projects. Here's how the projects were restructured:
+
+* /Tools/sdk/extras/android/support/v7/appcompat/libs/android-support-v7-appcompat.jar => app/src/main/android-support-v7-appcompat.jar
+* AndroidManifest.xml => app/src/main/AndroidManifest.xml
+* assets/ => app/src/main/assets
+* libs/libGoogleAnalyticsServices.jar => app/libs/libGoogleAnalyticsServices.jar
+* proguard-project.txt => app/proguard-project.txt
+* res/ => app/src/main/res/
+* src/ => app/src/main/java/
+* /Users/mlitvin/vbox/basic-http-client-master/http-client-android/ => app/src/main/java/
+* /Users/mlitvin/vbox/basic-http-client-master/http-client-android/.DS_Store => app/src/main/resources/.DS_Store
+* /Users/mlitvin/vbox/basic-http-client-master/http-client-android/pom.xml => app/src/main/resources/pom.xml
+* /Users/mlitvin/vbox/basic-http-client-master/http-client-android/src/.DS_Store => app/src/main/resources/src/.DS_Store
+* /Users/mlitvin/vbox/basic-http-client-master/http-client-android/src/main/.DS_Store => app/src/main/resources/src/main/.DS_Store
+* /Users/mlitvin/vbox/basic-http-client-master/http-client-android/src/main/java/.DS_Store => app/src/main/resources/src/main/java/.DS_Store
+* /Users/mlitvin/vbox/basic-http-client-master/http-client-android/src/main/java/com/.DS_Store => app/src/main/resources/src/main/java/com/.DS_Store
+* /Users/mlitvin/vbox/basic-http-client-master/http-client-android/src/main/java/com/turbomanage/.DS_Store => app/src/main/resources/src/main/java/com/turbomanage/.DS_Store
+* /Users/mlitvin/vbox/basic-http-client-master/http-client-android/src/main/java/com/turbomanage/httpclient/.DS_Store => app/src/main/resources/src/main/java/com/turbomanage/httpclient/.DS_Store
+* /Users/mlitvin/vbox/basic-http-client-master/http-client-java/ => app/src/main/java/
+* /Users/mlitvin/vbox/basic-http-client-master/http-client-java/LICENSE => app/src/main/resources/LICENSE
+* /Users/mlitvin/vbox/basic-http-client-master/http-client-java/pom.xml => app/src/main/resources/pom.xml
+* /Users/mlitvin/vbox/basic-http-client-master/http-client-java/src/main/java/com/.DS_Store => app/src/main/resources/src/main/java/com/.DS_Store
+* /Users/mlitvin/vbox/basic-http-client-master/http-client-java/src/main/java/com/turbomanage/.DS_Store => app/src/main/resources/src/main/java/com/turbomanage/.DS_Store
+* bullet_error.png_Zone.Identifier => bullet_error.png_zone.identifier
+
+Next Steps:
+-----------
+You can now build the project. The Gradle project needs network
+connectivity to download dependencies.
+
+Bugs:
+-----
+If for some reason your project does not build, and you determine that
+it is due to a bug or limitation of the Eclipse to Gradle importer,
+please file a bug at http://b.android.com with category
+Component-Tools.
+
+(This import summary is for your information only, and can be deleted
+after import once you are satisfied with the results.)

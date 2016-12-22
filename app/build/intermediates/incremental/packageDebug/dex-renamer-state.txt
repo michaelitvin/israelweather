@@ -1,0 +1,7 @@
+#Fri Dec 23 01:49:39 IST 2016
+base.0=/Users/mlitvin/git/IsraelWeather/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_5897e0ebb8eb89ad8280498f620903d7bf4effb8
+renamed.1=classes.dex
+renamed.0=classes2.dex
+file.1=/Users/mlitvin/git/IsraelWeather/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_919027bab30a1e5b6c12a2438e2e0db751c658e4/classes.dex
+base.1=/Users/mlitvin/git/IsraelWeather/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_919027bab30a1e5b6c12a2438e2e0db751c658e4
+file.0=/Users/mlitvin/git/IsraelWeather/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_5897e0ebb8eb89ad8280498f620903d7bf4effb8/classes.dex
