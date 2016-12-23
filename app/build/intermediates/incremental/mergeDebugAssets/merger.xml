@@ -1,2 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<merger version="3"><dataSet config="output"><source path="/Users/mlitvin/.android/build-cache/b7910a20296e989fdcdb583122e98dea33f5eea3/output/assets"/></dataSet><dataSet config="main"><source path="/Users/mlitvin/git/IsraelWeather/app/src/main/assets"/><source path="/Users/mlitvin/git/IsraelWeather/app/build/generated/assets/shaders/debug"/></dataSet><dataSet config="debug"><source path="/Users/mlitvin/git/IsraelWeather/app/src/debug/assets"/></dataSet></merger>

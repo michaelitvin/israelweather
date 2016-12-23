@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <dimen name="seekbar_padding">5dp</dimen>
-    <dimen name="spinner_padding">5dp</dimen>
-    <dimen name="spinner_text_size">10pt</dimen>
-    <integer name="max_image_scale">3</integer>
-    <string name="html_head">&lt;head>&lt;meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"/>&lt;meta name=\"viewport\" content=\"width=device-width, initial-scale=1.5, user-scalable=yes\" />&lt;/head></string>
-</resources>
